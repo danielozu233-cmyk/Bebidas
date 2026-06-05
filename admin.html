@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="favicon.ico">
+    <title>Panel Admin - Bebidas Preparadas</title>
+    <style>
+        :root {
+            --bg-main: #f8fafc;
+            /* Fondo claro y limpio de index.html */
+            --bg-card: #ffffff;
+            /* Tarjetas totalmente blancas */
+            --primary-color: #0f172a;
+            /* Gris pizarra oscuro para textos principales y botones */
+            --accent-color: #2563eb;
+            /* Azul eléctrico moderno */
+            --text-main: #334155;
+            /* Texto de lectura */
+            --text-muted: #64748b;
+            /* Subtítulos y descripciones */
+            --border-color: #e2e8f0;
+            /* Líneas divisorias suaves */
+            --danger: #ef4444;
+            --success: #16a34a;
+            --warning: #d97706;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding-bottom: 60px;
+        }
+
+        header {
+            padding: 30px 20px 20px;
+            background: #ffffff;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        /* Sistema de Pestañas (Tabs) Estilo Index */
+        .tabs-nav {
+            display: flex;
+            justify-content: center;
+            background: #f1f5f9;
+            margin: 0 auto;
+            max-width: 500px;
+            border-radius: 30px;
+            padding: 4px;
+            border: 1px solid var(--border-color);
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 10px 16px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            border-radius: 25px;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 24px auto;
+            padding: 0 16px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Tarjetas de Métricas */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .metric-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .metric-card h3 {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .metric-card .val {
+            font-size: 1.6rem;
+            font-weight: 800;
+        }
+
+        .metric-card.ingresos {
+            border-top: 4px solid var(--success);
+        }
+
+        .metric-card.ingresos .val {
+            color: var(--success);
+        }
+
+        .metric-card.gastos {
+            border-top: 4px solid var(--danger);
+        }
+
+        .metric-card.gastos .val {
+            color: var(--danger);
+        }
+
+        .metric-card.balance {
+            border-top: 4px solid var(--accent-color);
+        }
+
+        .metric-card.balance .val {
+            color: var(--accent-color);
+        }
+
+        /* Contenedores Principales (Admin Box) */
+        .admin-box {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            margin-bottom: 24px;
+        }
+
+        .admin-box h2 {
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+            font-weight: 800;
+            color: var(--primary-color);
+            border-left: 4px solid var(--accent-color);
+            padding-left: 10px;
+            text-transform: uppercase;
+            letter-spacing: -0.3px;
+        }
+
+        /* Inputs y Formularios Estilo Claro */
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 14px;
+            margin: 6px 0 14px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background: #f8fafc;
+            color: var(--text-main);
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--accent-color);
+            background: #ffffff;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-main);
+        }
+
+        .checkbox-container input {
+            width: auto;
+            margin: 0;
+            transform: scale(1.1);
+        }
+
+        .variant-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .variant-row input {
+            margin-bottom: 0;
+        }
+
+        /* Botones Estilo Claro */
+        button {
+            border: none;
+            border-radius: 10px;
+            padding: 12px 20px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--accent-color);
+            color: white;
+            width: 100%;
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.99);
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: var(--text-main);
+            font-size: 0.8rem;
+            padding: 8px 12px;
+            margin-bottom: 12px;
+        }
+
+        /* Listas de Filas */
+        .item-list-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .item-list-row:last-child {
+            border-bottom: none;
+        }
+
+        .item-info h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .item-info p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn-status {
+            font-size: 0.75rem;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+        }
+
+        .btn-status.disponible {
+            background: #dcfce7;
+            color: var(--success);
+        }
+
+        .btn-status.agotado {
+            background: #fee2e2;
+            color: var(--danger);
+        }
+
+        .btn-action-icon {
+            background: #f1f5f9;
+            padding: 8px;
+            font-size: 1rem;
+            border-radius: 50%;
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Tarjetas de Pedidos en Panel */
+        .order-card {
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 14px;
+            background: #f8fafc;
+        }
+
+        .order-card.pendiente {
+            border: 3px solid #f59e0b;
+            animation: pedidoPulse 1.5s infinite;
+        }
+
+        .order-card.preparando {
+            border: 3px solid #8b5cf6;
+        }
+
+        .order-card.camino {
+            border: 3px solid #2563eb;
+        }
+
+        .order-card.entregado {
+            border: 3px solid #22c55e;
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+
+        .order-id {
+            font-weight: 800;
+            font-size: 1rem;
+            color: var(--primary-color);
+        }
+
+        .order-date {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .order-details p {
+            font-size: 0.85rem;
+            margin-bottom: 4px;
+            line-height: 1.4;
+        }
+
+        .order-products {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        .order-products-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .product-line {
+            font-size: 0.85rem;
+            display: flex;
+            justify-content: space-between;
+            padding: 2px 0;
+        }
+
+        .order-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed var(--border-color);
+        }
+
+        .order-total {
+            font-weight: 800;
+            font-size: 1.05rem;
+            color: var(--primary-color);
+        }
+
+        /* Selectores de Estado de Pedidos */
+        .select-status {
+            width: auto;
+            padding: 6px 10px;
+            margin: 0;
+            font-weight: 700;
+            font-size: 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        .status-pendiente {
+            background: #fef3c7;
+            color: var(--warning);
+            border-color: #fde68a;
+        }
+
+        .status-preparando {
+            background: #8b5cf6;
+            color: white;
+            border-color: #a78bfa;
+        }
+
+        .status-encamino {
+            background: #2563eb;
+            color: white;
+            border-color: #3b82f6;
+        }
+
+        .status-entregado {
+            background: #22c55e;
+            color: white;
+            border-color: #4ade80;
+        }
+
+        .badge-tipo {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .badge-tipo.ingreso {
+            background: #dcfce7;
+            color: var(--success);
+        }
+
+        .badge-tipo.gasto {
+            background: #fee2e2;
+            color: var(--danger);
+        }
+
+        @keyframes pedidoPulse {
+
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 rgba(245, 158, 11, 0);
+            }
+
+            50% {
+                transform: scale(1.02);
+                box-shadow: 0 0 25px rgba(245, 158, 11, .6);
+            }
+
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 rgba(245, 158, 11, 0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>🎛️ PANEL DE ADMINISTRACIÓN</h1>
+        <div class="tabs-nav">
+            <button class="tab-btn active" onclick="switchTab('dashboard')">📊 Métricas</button>
+            <button class="tab-btn" onclick="switchTab('productos')">🍹 Productos</button>
+            <button class="tab-btn" onclick="switchTab('finanzas')">💸 Finanzas</button>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <div id="tab-dashboard" class="tab-content active">
+            <div class="metrics-grid">
+                <div class="metric-card ingresos">
+                    <h3>Ingresos Mensuales</h3>
+                    <div class="val">Q<span id="lbl-ingresos">0.00</span></div>
+                </div>
+                <div class="metric-card gastos">
+                    <h3>Gastos Mensuales</h3>
+                    <div class="val">Q<span id="lbl-gastos">0.00</span></div>
+                </div>
+                <div class="metric-card balance">
+                    <h3>Balance Neto</h3>
+                    <div class="val">Q<span id="lbl-balance">0.00</span></div>
+                </div>
+            </div>
+
+            <div class="admin-box">
+                <h2>📥 Gestión de Pedidos en Tiempo Real</h2>
+                <div id="admin-orders-list">
+                    <p style="text-align:center; color:var(--text-muted); padding: 20px 0;">Cargando pedidos activos...
+                    </p>
+                </div>
+            </div>
+
+            <div class="admin-box">
+                <h2>Movimientos Financieros Recientes</h2>
+                <div id="dashboard-recent-movements"></div>
+            </div>
+        </div>
+
+        <div id="tab-productos" class="tab-content">
+            <div class="admin-box">
+                <h2 id="form-product-title">Agregar Nuevo Producto</h2>
+                <form id="productForm">
+                    <input type="hidden" id="prod-id">
+                    <input type="text" id="prod-nombre" placeholder="Nombre de la bebida (Ej: Azulito)" required>
+                    <textarea id="prod-descripcion" placeholder="Descripción corta y provocativa para el cliente..."
+                        required></textarea>
+                    <input type="url" id="prod-imagen" placeholder="URL de la Imagen (Unsplash o enlace directo)"
+                        required>
+
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="prod-has-variants" onchange="toggleVariantsUI()">
+                        ¿Este producto tiene variantes? (Ej: Sin alcohol, 2oz, 4oz)
+                    </label>
+
+                    <div id="box-single-price">
+                        <input type="number" id="prod-precio" placeholder="Precio Base (Q)" min="0">
+                    </div>
+
+                    <div id="box-variants" style="display: none;">
+                        <button type="button" class="btn-secondary" onclick="addVariantRow()">+ Añadir Variante</button>
+                        <div id="variants-container"></div>
+                    </div>
+
+                    <button type="submit" class="btn-primary" style="margin-top: 15px;">Guardar Producto</button>
+                </form>
+            </div>
+
+            <div class="admin-box">
+                <h2>Catálogo de Productos Activos</h2>
+                <div id="admin-products-list"></div>
+            </div>
+        </div>
+
+        <div id="tab-finanzas" class="tab-content">
+            <div class="admin-box">
+                <h2>Registrar Flujo de Caja</h2>
+                <form id="financeForm">
+                    <select id="fin-tipo" required>
+                        <option value="" disabled selected>Tipo de movimiento...</option>
+                        <option value="ingreso">🟢 Ingreso (Venta Extra, etc.)</option>
+                        <option value="gasto">🔴 Gasto (Insumos, Alcohol, Fruta, Hielo)</option>
+                    </select>
+                    <input type="number" id="fin-monto" placeholder="Monto en Quetzales (Q)" min="0" step="0.01"
+                        required>
+                    <input type="text" id="fin-desc" placeholder="Descripción (Ej: Compra de Ron y Hielo)" required>
+                    <input type="date" id="fin-fecha" required>
+
+                    <button type="submit" class="btn-primary">Registrar Movimiento</button>
+                </form>
+            </div>
+
+            <div class="admin-box">
+                <h2>Historial Completo de Transacciones</h2>
+                <div id="admin-finance-list"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCi2cMCDPj6UTMJTDiNQsNmUDjRB8xCkiM",
+            authDomain: "bebidaspreparada.firebaseapp.com",
+            projectId: "bebidaspreparada",
+            storageBucket: "bebidaspreparada.firebasestorage.app",
+            messagingSenderId: "762147100060",
+            appId: "1:762147100060:web:e50316cf83aec23a3da459",
+            measurementId: "G-5S0BVLHLJL"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const productsRef = collection(db, "productos");
+        const financeRef = collection(db, "transacciones");
+        const ordersRef = collection(db, "pedidos"); // Nueva Colección de Pedidos
+
+        let ingresosPedidos = 0;
+        // --- MANEJO DE PESTAÑAS ---
+        window.switchTab = function (tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+            event.currentTarget.classList.add('active');
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+        };
+
+        // --- GESTIÓN DE VARIANTES ---
+        window.toggleVariantsUI = function () {
+            const hasVariants = document.getElementById('prod-has-variants').checked;
+            document.getElementById('box-single-price').style.display = hasVariants ? 'none' : 'block';
+            document.getElementById('box-variants').style.display = hasVariants ? 'block' : 'none';
+
+            if (hasVariants && document.getElementById('variants-container').children.length === 0) {
+                addVariantRow();
+            }
+        };
+
+        window.addVariantRow = function (name = '', price = '') {
+            const container = document.getElementById('variants-container');
+            const row = document.createElement('div');
+            row.className = 'variant-row';
+            row.innerHTML = `
+            <input type="text" class="v-name" placeholder="Ej: Con 2 oz" value="${name}" required>
+            <input type="number" class="v-price" placeholder="Precio" value="${price}" min="0" required style="width: 100px;">
+            <button type="button" style="background:transparent; color:var(--danger); font-size:1.2rem; padding:6px;" onclick="this.parentElement.remove()">🗑️</button>
+        `;
+            container.appendChild(row);
+        };
+
+        // --- GUARDAR O EDITAR PRODUCTOS ---
+        document.getElementById('productForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('prod-id').value;
+            const nombre = document.getElementById('prod-nombre').value.trim();
+            const descripcion = document.getElementById('prod-descripcion').value.trim();
+            const imagen = document.getElementById('prod-imagen').value.trim();
+            const hasVariants = document.getElementById('prod-has-variants').checked;
+
+            let productData = {
+                name: nombre,
+                desc: descripcion,
+                img: imagen,
+                hasVariants: hasVariants,
+                updatedAt: serverTimestamp()
+            };
+
+            if (hasVariants) {
+                const variantRows = document.querySelectorAll('.variant-row');
+                let variantsArray = [];
+                variantRows.forEach(row => {
+                    variantsArray.push({
+                        name: row.querySelector('.v-name').value.trim(),
+                        precio: parseFloat(row.querySelector('.v-price').value)
+                    });
+                });
+                productData.variants = variantsArray;
+                productData.precio = null;
+            } else {
+                productData.precio = parseFloat(document.getElementById('prod-precio').value);
+                productData.variants = null;
+            }
+
+            try {
+                if (id) {
+                    await updateDoc(doc(db, "productos", id), productData);
+                } else {
+                    productData.disponible = true;
+                    await addDoc(productsRef, productData);
+                }
+                document.getElementById('productForm').reset();
+                document.getElementById('prod-id').value = '';
+                document.getElementById('variants-container').innerHTML = '';
+                document.getElementById('form-product-title').textContent = "Agregar Nuevo Producto";
+                toggleVariantsUI();
+            } catch (error) {
+                alert("Error: " + error.message);
+            }
+        });
+
+        // ESCUCHAR PRODUCTOS EN TIEMPO REAL
+        onSnapshot(productsRef, (snapshot) => {
+            const listContainer = document.getElementById('admin-products-list');
+            listContainer.innerHTML = '';
+
+            snapshot.forEach(docSnap => {
+                const p = docSnap.data();
+                const id = docSnap.id;
+                const precioTexto = p.hasVariants ? `Variantes (${p.variants.length})` : `Q${p.precio}`;
+                const statusClass = p.disponible ? 'disponible' : 'agotado';
+                const statusText = p.disponible ? 'Disponible' : 'Agotado';
+
+                listContainer.innerHTML += `
+                <div class="item-list-row">
+                    <div class="item-info">
+                        <h4>${p.name}</h4>
+                        <p>${precioTexto} — ${p.desc.substring(0, 45)}...</p>
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn-status ${statusClass}" onclick="toggleStatus('${id}', ${p.disponible})">${statusText}</button>
+                        <button class="btn-action-icon" onclick="editProduct('${id}', ${JSON.stringify(p).replace(/"/g, '&quot;')})">✏️</button>
+                        <button class="btn-action-icon" onclick="deleteProduct('${id}')">🗑️</button>
+                    </div>
+                </div>
+            `;
+            });
+        });
+
+        window.toggleStatus = async function (id, currentStatus) {
+            await updateDoc(doc(db, "productos", id), { disponible: !currentStatus });
+        };
+
+        window.editProduct = function (id, data) {
+            document.getElementById('form-product-title').textContent = "Editar Producto";
+            document.getElementById('prod-id').value = id;
+            document.getElementById('prod-nombre').value = data.name;
+            document.getElementById('prod-descripcion').value = data.desc;
+            document.getElementById('prod-imagen').value = data.img;
+            document.getElementById('prod-has-variants').checked = data.hasVariants;
+            toggleVariantsUI();
+            if (data.hasVariants) {
+                document.getElementById('variants-container').innerHTML = '';
+                data.variants.forEach(v => addVariantRow(v.name, v.precio));
+            } else {
+                document.getElementById('prod-precio').value = data.precio;
+            }
+            switchTab('productos');
+        };
+
+        window.deleteProduct = async function (id) {
+            if (confirm("¿Eliminar este producto?")) {
+                await deleteDoc(doc(db, "productos", id));
+            }
+        };
+
+        // --- ESCUCHAR Y GESTIONAR PEDIDOS EN TIEMPO REAL ---
+        onSnapshot(ordersRef, (snapshot) => {
+            const ordersList = document.getElementById('admin-orders-list');
+            ordersList.innerHTML = '';
+
+            let pedidosArray = [];
+            snapshot.forEach(d => pedidosArray.push({ id: d.id, ...d.data() }));
+
+            // Ordenar por fecha descendente de forma segura
+            pedidosArray.sort((a, b) => {
+                const dateA = a.fecha ? a.fecha.toMillis() : Date.now();
+                const dateB = b.fecha ? b.fecha.toMillis() : Date.now();
+                return dateB - dateA;
+            });
+
+            if (pedidosArray.length === 0) {
+                ordersList.innerHTML = '<p style="text-align:center; color:var(--text-muted); padding: 20px 0;">No se han registrado pedidos todavía.</p>';
+                return;
+            }
+            ingresosPedidos = 0;
+            pedidosArray.forEach(pedido => {
+                if (pedido.estado === "Entregado") {
+                    ingresosPedidos += Number(pedido.total || 0);
+                } let fechaFormateada = "Reciente";
+                if (pedido.fecha) {
+                    const dateObj = pedido.fecha.toDate();
+                    fechaFormateada = dateObj.toLocaleDateString('es-GT', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' + dateObj.toLocaleTimeString('es-GT', { hour: '2-digit', minute: '2-digit' });
+                }
+
+                // Seleccionar clase de color del selector según el estado actual
+                let selectClass = "status-pendiente";
+
+                if (pedido.estado === "Preparando") selectClass = "status-preparando";
+                if (pedido.estado === "En camino") selectClass = "status-encamino";
+                if (pedido.estado === "Entregado") selectClass = "status-entregado";
+                let cardClass = "pendiente";
+
+                if (pedido.estado === "Preparando")
+                    cardClass = "preparando";
+
+                if (pedido.estado === "En camino")
+                    cardClass = "camino";
+
+                if (pedido.estado === "Entregado")
+                    cardClass = "entregado";
+                // Listado de productos comprados
+                let productosHtml = '';
+                if (pedido.productos && pedido.productos.length > 0) {
+                    pedido.productos.forEach(prod => {
+                        productosHtml += `
+                        <div class="product-line">
+                            <span><strong>${prod.cantidad}x</strong> ${prod.name}</span>
+                            <span>Q${prod.precio * prod.cantidad}</span>
+                        </div>
+                    `;
+                    });
+                }
+                ordersList.innerHTML += `
+    <div class="order-card ${cardClass}">
+                    <div class="order-header">
+                        <span class="order-id">Pedido: #${pedido.numero || 'N/A'}</span>
+                        <span class="order-date">${fechaFormateada}</span>
+                    </div>
+                    <div class="order-details">
+                        <p><strong>Cliente:</strong> ${pedido.cliente}</p>
+                        <p><strong>Residencial:</strong> ${pedido.residencial} — <strong>Código:</strong> ${pedido.codigoAcceso || 'N/A'}</p>
+                        <p><strong>Dirección:</strong> ${pedido.direccion}</p>
+                        <p><strong>Pago:</strong> ${pedido.metodoPago}</p>
+                    </div>
+                    
+                    <div class="order-products">
+                        <div class="order-products-title">Bebidas Solicitadas</div>
+                        ${productosHtml}
+                    </div>
+
+                    <div class="order-footer">
+                        <span class="order-total">Total: Q${pedido.total}</span>
+                        <div class="item-actions">
+                            <select class="select-status ${selectClass}" onchange="updateOrderStatus('${pedido.id}', this.value)">
+                                <option value="Pendiente" ${pedido.estado === 'Pendiente' ? 'selected' : ''}>⏳ Pendiente</option>
+                                <option value="Preparando" ${pedido.estado === 'Preparando' ? 'selected' : ''}>⏱️ Preparando</option>
+                                <option value="En camino" ${pedido.estado === 'En camino' ? 'selected' : ''}>🛵 En camino</option>
+                                <option value="Entregado" ${pedido.estado === 'Entregado' ? 'selected' : ''}>✅ Entregado</option>
+                            </select>
+                            <button class="btn-action-icon" style="color: var(--danger)" onclick="deleteOrder('${pedido.id}')">🗑️</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            });
+        });
+
+        window.updateOrderStatus = async function (id, newStatus) {
+            try {
+                await updateDoc(doc(db, "pedidos", id), { estado: newStatus });
+            } catch (error) {
+                alert("Error al actualizar estado: " + error.message);
+            }
+        };
+
+        window.deleteOrder = async function (id) {
+            if (confirm("¿Estás seguro de que deseas eliminar este registro de pedido?")) {
+                await deleteDoc(doc(db, "pedidos", id));
+            }
+        };
+
+        // --- ACCIONES FINANCIERAS ---
+        document.getElementById('fin-fecha').value = new Date().toISOString().substring(0, 10);
+
+        document.getElementById('financeForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const tipo = document.getElementById('fin-tipo').value;
+            const monto = parseFloat(document.getElementById('fin-monto').value);
+            const descripcion = document.getElementById('fin-desc').value.trim();
+            const fecha = document.getElementById('fin-fecha').value;
+
+            try {
+                await addDoc(financeRef, { tipo, monto, descripcion, fecha, createdAt: serverTimestamp() });
+                document.getElementById('financeForm').reset();
+                document.getElementById('fin-fecha').value = new Date().toISOString().substring(0, 10);
+            } catch (error) {
+                alert("Error: " + error.message);
+            }
+        });
+
+        onSnapshot(financeRef, (snapshot) => {
+            const financeList = document.getElementById('admin-finance-list');
+            const recentBox = document.getElementById('dashboard-recent-movements');
+            financeList.innerHTML = '';
+            recentBox.innerHTML = '';
+
+            let totalIngresos = 0;
+            let totalGastos = 0;
+            let htmlAcumulado = '';
+
+            const docs = [];
+            snapshot.forEach(d => docs.push({ id: d.id, ...d.data() }));
+            docs.sort((a, b) => b.fecha.localeCompare(a.fecha));
+
+            docs.forEach((f, idx) => {
+                if (f.tipo === 'ingreso') totalIngresos += f.monto;
+                if (f.tipo === 'gasto') totalGastos += f.monto;
+
+                const badgeClass = f.tipo === 'ingreso' ? 'ingreso' : 'gasto';
+                const sign = f.tipo === 'ingreso' ? '+' : '-';
+
+                // Convertir fecha YYYY-MM-DD a DD/MM/YYYY antes de mostrarla
+                let fechaFormateada = f.fecha;
+                if (f.fecha && f.fecha.includes('-')) {
+                    const parts = f.fecha.split('-');
+                    if (parts.length === 3) fechaFormateada = `${parts[2]}/${parts[1]}/${parts[0]}`;
+                }
+
+                const rowHtml = `
+                <div class="item-list-row">
+                    <div class="item-info">
+                        <span class="badge-tipo ${badgeClass}">${f.tipo.toUpperCase()}</span>
+                        <strong style="margin-left: 8px;">${f.descripcion}</strong>
+                        <p style="margin-top: 4px;">Fecha: ${fechaFormateada}</p>
+                    </div>
+                    <div style="font-weight: 800; color: ${f.tipo === 'ingreso' ? 'var(--success)' : 'var(--danger)'}">
+                        ${sign} Q${f.monto.toFixed(2)}
+                        <button class="btn-action-icon" style="margin-left:8px; display:inline-flex;" onclick="deleteTransaction('${f.id}')">🗑️</button>
+                    </div>
+                </div>
+            `;
+                htmlAcumulado += rowHtml;
+
+                if (idx < 4) {
+                    recentBox.innerHTML += `
+                    <div class="item-list-row">
+                        <div class="item-info">
+                            <strong>${f.descripcion}</strong>
+                            <p>${fechaFormateada}</p>
+                        </div>
+                        <span class="badge-tipo ${badgeClass}">${sign} Q${f.monto.toFixed(2)}</span>
+                    </div>
+                `;
+                }
+            });
+
+            financeList.innerHTML = htmlAcumulado || '<p style="text-align:center; color:var(--text-muted);">No hay transacciones registradas.</p>';
+            if (!recentBox.innerHTML) recentBox.innerHTML = '<p style="text-align:center; color:var(--text-muted);">Sin movimientos recientes.</p>';
+
+            const ingresosTotales =
+                totalIngresos + ingresosPedidos;
+
+            document.getElementById('lbl-ingresos').textContent =
+                ingresosTotales.toFixed(2);
+
+            document.getElementById('lbl-gastos').textContent =
+                totalGastos.toFixed(2);
+
+            const balance =
+                ingresosTotales - totalGastos;
+            document.getElementById('lbl-balance').textContent = balance.toFixed(2);
+            document.getElementById('lbl-balance').parentElement.style.color = balance >= 0 ? 'var(--success)' : 'var(--danger)';
+        });
+
+        window.deleteTransaction = async function (id) {
+            if (confirm("¿Borrar este registro contable?")) {
+                await deleteDoc(doc(db, "transacciones", id));
+            }
+        };
+    </script>
+</body>
+
+</html>

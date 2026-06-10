@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="icon" href="favicon.ico">
+    <title>Bebidas & Relax</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Paleta Beach Bar */
+            --bg-main: #FFF9F2;       /* Arena clara */
+            --bg-card: #ffffff;
+            --primary-color: #0c4a6e; /* Azul marino profundo (Océano) */
+            --accent-color: #f97316;  /* Naranja atardecer (Llamativo y apetitoso) */
+            --accent-hover: #ea580c;
+            --promo-color: #10b981;   /* Verde esmeralda para ofertas */
+            --text-main: #334155;
+            --text-muted: #64748b;
+            --border-color: #ffedd5;  /* Tono cálido para bordes */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding-bottom: 110px;
+            scroll-behavior: smooth;
+            background-image: radial-gradient(#fcd34d 0.5px, transparent 0.5px);
+            background-size: 20px 20px;
+            background-position: 0 0;
+        }
+
+        /* Animaciones globales */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        header {
+            padding: 40px 20px 25px;
+            text-align: center;
+            background: rgba(255, 249, 242, 0.9);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            border-bottom: 2px solid var(--border-color);
+            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.05);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .logo p {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .alert-banner {
+            background: #ffedd5;
+            color: #c2410c;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            display: inline-block;
+            border: 1px solid #fed7aa;
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(249, 115, 22, 0.1);
+        }
+
+        /* Títulos de Sección */
+        .section-title {
+            padding: 25px 20px 5px;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            max-width: 700px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Contenedor Horizontal para Ofertas */
+        .ofertas-container {
+            display: flex;
+            overflow-x: auto;
+            gap: 16px;
+            padding: 10px 20px 20px;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .ofertas-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .ofertas-container .card {
+            min-width: 260px;
+            scroll-snap-align: center;
+            border: 2px solid var(--promo-color);
+            box-shadow: 0 8px 15px rgba(16, 185, 129, 0.15);
+        }
+
+        .promo-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: var(--promo-color);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            z-index: 3;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        /* Grid Normal */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            padding: 10px 16px 30px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            box-shadow: 0 6px 12px -2px rgba(12, 74, 110, 0.05);
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px -5px rgba(12, 74, 110, 0.15);
+            border-color: #fed7aa;
+        }
+
+        .card img {
+            width: 100%;
+            height: 220px; 
+            object-fit: cover;
+            background-color: #fff7ed;
+            transition: transform 0.5s ease;
+        }
+
+        .card:hover img {
+            transform: scale(1.05);
+        }
+
+        /* ESTILOS PARA PRODUCTOS AGOTADOS */
+        .card.agotado {
+            opacity: 0.7;
+            border-color: #cbd5e1;
+            box-shadow: none;
+        }
+
+        .card.agotado:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        .card.agotado img {
+            filter: grayscale(100%);
+        }
+
+        .agotado-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: #ef4444;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            z-index: 3;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .info {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            background: white;
+            position: relative;
+            z-index: 2;
+        }
+
+        .info h3 {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 4px;
+            line-height: 1.2;
+        }
+
+        .info .desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+            margin-bottom: 12px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            padding-top: 10px;
+            border-top: 1px dashed var(--border-color);
+        }
+
+        .price {
+            color: var(--accent-color);
+            font-weight: 800;
+            font-size: 1.2rem;
+        }
+
+        .btn-add-icon {
+            background: var(--primary-color);
+            color: white;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 8px rgba(12, 74, 110, 0.2);
+        }
+
+        .btn-add-icon:hover {
+            background: var(--accent-color);
+            transform: scale(1.1) rotate(90deg);
+        }
+
+        .btn-add-icon:disabled {
+            background: #cbd5e1;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Botones Flotantes Modernos */
+        .cart-btn, .tracking-btn {
+            position: fixed;
+            bottom: 24px;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 1.05rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            animation: fadeUp 0.8s ease-out;
+        }
+
+        .cart-btn {
+            right: 24px;
+            background: var(--accent-color);
+            box-shadow: 0 10px 25px -5px rgba(249, 115, 22, 0.4);
+        }
+
+        .tracking-btn {
+            left: 24px;
+            background: var(--primary-color);
+            box-shadow: 0 10px 25px -5px rgba(12, 74, 110, 0.4);
+        }
+
+        .cart-btn:hover, .tracking-btn:hover {
+            transform: translateY(-4px);
+        }
+
+        .cart-badge {
+            background: white;
+            color: var(--accent-color);
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 800;
+        }
+
+        /* Modales */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(12, 74, 110, 0.6);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            z-index: 30;
+            align-items: flex-end;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @media (min-width: 600px) {
+            .modal { align-items: center; justify-content: center; }
+        }
+
+        .modal-content {
+            background: #ffffff;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border-radius: 32px 32px 0 0;
+            padding: 30px 24px;
+            box-shadow: 0 -15px 30px -5px rgba(0, 0, 0, 0.2);
+            animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @media (min-width: 600px) {
+            .modal-content {
+                max-width: 480px;
+                border-radius: 28px;
+            }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); opacity: 0.8; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px dashed var(--border-color);
+        }
+
+        .modal-header h2 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--primary-color);
+        }
+
+        .close-btn {
+            background: #fff7ed;
+            color: var(--accent-color);
+            font-size: 1.4rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .close-btn:hover {
+            background: #fed7aa;
+            transform: rotate(90deg);
+        }
+
+        .variant-option {
+            background: #fff7ed;
+            border: 2px solid transparent;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .variant-option:hover {
+            background: #ffffff;
+            border-color: var(--accent-color);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(249, 115, 22, 0.15);
+        }
+
+        .variant-name { font-weight: 700; font-size: 1.05rem; color: var(--primary-color); }
+        .variant-price { color: var(--accent-color); font-weight: 800; font-size: 1.15rem; }
+
+        .cart-items-container {
+            max-height: 250px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding-right: 8px;
+        }
+
+        .line {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .line-qty { color: var(--accent-color); font-weight: 800; font-size: 1rem; margin-right: 12px; }
+
+        .line-remove {
+            background: #fee2e2;
+            color: #ef4444;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            margin-left: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .line-remove:hover { background: #ef4444; color: white; transform: scale(1.1); }
+
+        .total-section {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin: 24px 0;
+            color: var(--primary-color);
+            padding: 16px 20px;
+            background: #fff7ed;
+            border-radius: 16px;
+            border: 1px solid #fed7aa;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 16px;
+            margin: 8px 0 16px;
+            border-radius: 14px;
+            border: 2px solid var(--border-color);
+            background: #ffffff;
+            color: var(--primary-color);
+            font-size: 1rem;
+            font-weight: 600;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.1);
+        }
+        
+        input::placeholder, textarea::placeholder { color: #94a3b8; font-weight: 500; }
+
+        .btn-submit {
+            width: 100%;
+            background: var(--accent-color);
+            color: white;
+            font-weight: 800;
+            font-size: 1.1rem;
+            padding: 18px;
+            border-radius: 16px;
+            border: none;
+            box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3);
+            margin-top: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(249, 115, 22, 0.4);
+        }
+
+        .loading {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--accent-color);
+            font-weight: 800;
+            font-size: 1.2rem;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+
+        /* Tracking Card */
+        .tracking-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 24px;
+            border: 2px solid var(--border-color);
+            animation: fadeUp 0.4s ease-out;
+        }
+
+        .estado-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 999px;
+            color: white;
+            font-weight: 800;
+            font-size: 0.95rem;
+            margin: 12px 0;
+        }
+
+        .estado-pendiente { background: #f59e0b; }
+        .estado-preparando { background: #8b5cf6; }
+        .estado-camino { background: #0ea5e9; }
+        .estado-entregado { background: #10b981; }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            <p>🍹 Drinks & Relax 🌴</p>
+            <div class="alert-banner">Almería y Navarra: Mínimo 2 bebidas</div>
+        </div>
+    </header>
+
+    <div id="ofertas-wrapper" style="display: none;">
+        <div class="section-title">🔥 Combos y Promos</div>
+        <div class="ofertas-container" id="ofertas"></div>
+    </div>
+
+    <div class="section-title">📖 Menú Principal</div>
+    <div class="grid" id="products">
+        <div class="loading">Preparando barra...</div>
+    </div>
+
+    <button class="cart-btn" onclick="openCart()">
+        🛒 <span class="cart-badge" id="count">0</span>
+    </button>
+    <button class="tracking-btn" onclick="openTrackingModal()">
+        📦 Rastrear
+    </button>
+
+    <div class="modal" id="variantModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="variantTitle">Elige tu estilo</h2>
+                <button class="close-btn" onclick="closeVariantModal()">✕</button>
+            </div>
+            <div id="variantOptions"></div>
+        </div>
+    </div>
+
+    <div class="modal" id="cartModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Tu Pedido</h2>
+                <button class="close-btn" onclick="closeCart()">✕</button>
+            </div>
+
+            <div class="cart-items-container" id="cartItems"></div>
+
+            <div class="total-section">
+                <span>Total:</span>
+                <span>Q<span id="total">0</span></span>
+            </div>
+
+            <input type="text" id="nombre" placeholder="Tu nombre completo">
+            <textarea id="direccion" placeholder="Número de Casa (Ej. Manzana X, Casa Y)"></textarea>
+            <input type="text" id="codigo" placeholder="Código de acceso (Si aplica)">
+
+            <select id="residencial">
+                <option value="" disabled selected>Selecciona tu residencial...</option>
+                <option value="Almería">Almería</option>
+                <option value="Navarra">Navarra</option>
+                <option value="Condado Florenza">Condado Florenza</option>
+            </select>
+
+            <select id="pago">
+                <option value="" disabled selected>Método de pago...</option>
+                <option value="Efectivo">Efectivo</option>
+                <option value="Transferencia">Transferencia</option>
+            </select>
+
+            <button class="btn-submit" onclick="confirmarPedido()">Pedir por WhatsApp</button>
+        </div>
+    </div>
+
+    <div class="modal" id="trackingModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Rastrear Pedido</h2>
+                <button class="close-btn" onclick="closeTrackingModal()">✕</button>
+            </div>
+            <input type="text" id="numeroPedidoBusqueda" placeholder="Número de pedido">
+            <button class="btn-submit" onclick="buscarPedido()">Buscar</button>
+            <div id="resultadoPedido" style="margin-top:24px;"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import {
+            getFirestore, collection, onSnapshot, addDoc, serverTimestamp, query, where, getDocs
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyCi2cMCDPj6UTMJTDiNQsNmUDjRB8xCkiM",
+            authDomain: "bebidaspreparada.firebaseapp.com",
+            projectId: "bebidaspreparada",
+            storageBucket: "bebidaspreparada.firebasestorage.app",
+            messagingSenderId: "762147100060",
+            appId: "1:762147100060:web:e50316cf83aec23a3da459",
+            measurementId: "G-5S0BVLHLJL"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let allProducts = [];
+        let carrito = [];
+        let productoSeleccionadoId = null;
+
+        onSnapshot(collection(db, "productos"), (snapshot) => {
+            allProducts = [];
+            snapshot.forEach((doc) => {
+                allProducts.push({ id: doc.id, ...doc.data() });
+            });
+
+            // Ordenar: Las cervezas al final
+            allProducts.sort((a, b) => {
+                const nombreA = a.name ? a.name.toLowerCase() : "";
+                const nombreB = b.name ? b.name.toLowerCase() : "";
+                const esCervezaA = nombreA.includes('cerveza');
+                const esCervezaB = nombreB.includes('cerveza');
+
+                if (esCervezaA && !esCervezaB) return 1;
+                if (!esCervezaA && esCervezaB) return -1;
+                return 0; 
+            });
+
+            renderCatalogos();
+        });
+
+        function renderCatalogos() {
+            const containerOfertas = document.getElementById('ofertas');
+            const wrapperOfertas = document.getElementById('ofertas-wrapper');
+            const containerMenu = document.getElementById('products');
+            
+            containerOfertas.innerHTML = '';
+            containerMenu.innerHTML = '';
+
+            let hayOfertas = false;
+            let delay = 0;
+
+            allProducts.forEach((p) => {
+                let precioTexto = "";
+                if (p.hasVariants && p.variants && p.variants.length > 0) {
+                    const precioMinimo = Math.min(...p.variants.map(v => v.precio));
+                    precioTexto = `Desde Q${precioMinimo}`;
+                } else {
+                    precioTexto = `Q${p.precio}`;
+                }
+
+                // Lógica de Agotado
+                const estaAgotado = p.disponible === false;
+                const claseAgotado = estaAgotado ? 'agotado' : '';
+                const badgeAgotado = estaAgotado ? '<div class="agotado-badge">AGOTADO</div>' : '';
+                const btnDisabled = estaAgotado ? 'disabled' : '';
+                const funcionClick = estaAgotado ? '' : `onclick="agregar('${p.id}')"`;
+
+                // Badge de Promo (Solo para las que van en el carrusel superior)
+                const badgePromo = p.esOferta && !estaAgotado ? '<div class="promo-badge">PROMO</div>' : '';
+
+                const cardHTML = `
+                <div class="card ${claseAgotado}" style="animation-delay: ${delay}s">
+                    ${badgeAgotado}
+                    ${badgePromo}
+                    <img src="${p.img}" alt="${p.name}" loading="lazy">
+                    <div class="info">
+                        <h3>${p.name}</h3>
+                        <p class="desc">${p.desc}</p>
+                        <div class="price-row">
+                            <div class="price">${precioTexto}</div>
+                            <button class="btn-add-icon" ${btnDisabled} ${funcionClick}>+</button>
+                        </div>
+                    </div>
+                </div>`;
+
+                if (p.esOferta) {
+                    hayOfertas = true;
+                    containerOfertas.innerHTML += cardHTML;
+                } else {
+                    containerMenu.innerHTML += cardHTML;
+                }
+
+                delay += 0.05;
+            });
+
+            wrapperOfertas.style.display = hayOfertas ? 'block' : 'none';
+
+            if (containerMenu.innerHTML === '') {
+                containerMenu.innerHTML = '<div class="loading">No hay bebidas disponibles.</div>';
+            }
+        }
+
+        function agregar(id) {
+            const producto = allProducts.find(p => p.id === id);
+            if (!producto || producto.disponible === false) return;
+
+            if (producto.hasVariants && producto.variants) {
+                productoSeleccionadoId = id;
+                document.getElementById('variantTitle').textContent = `Opciones para ${producto.name}`;
+                const container = document.getElementById('variantOptions');
+                container.innerHTML = '';
+
+                producto.variants.forEach((v, vIdx) => {
+                    container.innerHTML += `
+                    <div class="variant-option" onclick="agregarConVariante(${vIdx})">
+                        <span class="variant-name">${v.name}</span>
+                        <span class="variant-price">Q${v.precio}</span>
+                    </div>`;
+                });
+                document.getElementById('variantModal').style.display = 'flex';
+            } else {
+                agregarAlCarrito(producto.name, producto.precio);
+            }
+        }
+
+        function agregarConVariante(vIdx) {
+            const producto = allProducts.find(p => p.id === productoSeleccionadoId);
+            const variante = producto.variants[vIdx];
+            const nombreCompleto = `${producto.name} (${variante.name})`;
+
+            agregarAlCarrito(nombreCompleto, variante.precio);
+            closeVariantModal();
+        }
+
+        function agregarAlCarrito(nombre, precio) {
+            const itemExistente = carrito.find(item => item.name === nombre);
+            if (itemExistente) {
+                itemExistente.cantidad++;
+            } else {
+                carrito.push({ name: nombre, precio: precio, cantidad: 1 });
+            }
+            actualizarContador();
+        }
+
+        function eliminar(index) {
+            carrito.splice(index, 1);
+            actualizarContador();
+            renderCart();
+        }
+
+        function actualizarContador() {
+            const totalItems = carrito.reduce((sum, item) => sum + item.cantidad, 0);
+            document.getElementById('count').textContent = totalItems;
+        }
+
+        function openCart() {
+            document.getElementById('cartModal').style.display = 'flex';
+            renderCart();
+        }
+
+        function closeCart() {
+            document.getElementById('cartModal').style.display = 'none';
+        }
+
+        function closeVariantModal() {
+            document.getElementById('variantModal').style.display = 'none';
+            productoSeleccionadoId = null;
+        }
+
+        function renderCart() {
+            let html = '';
+            let total = 0;
+            carrito.forEach((p, index) => {
+                const subtotal = p.precio * p.cantidad;
+                html += `
+                <div class="line">
+                    <div>
+                        <span class="line-qty">${p.cantidad}x</span>
+                        <span style="font-weight: 700;">${p.name}</span>
+                    </div>
+                    <div style="display: flex; align-items: center;">
+                        <span style="font-weight: 800; color: var(--primary-color);">Q${subtotal}</span>
+                        <button class="line-remove" onclick="eliminar(${index})">✕</button>
+                    </div>
+                </div>`;
+                total += subtotal;
+            });
+            document.getElementById('cartItems').innerHTML = html || '<p style="text-align:center; color:#94a3b8; padding: 30px 0; font-weight: 600;">Tu vaso está vacío 🍹</p>';
+            document.getElementById('total').textContent = total;
+        }
+
+        async function confirmarPedido() {
+            const totalBebidas = carrito.reduce((sum, item) => sum + item.cantidad, 0);
+
+            if (totalBebidas === 0) {
+                alert('Por favor, agrega al menos una bebida a tu pedido.');
+                return;
+            }
+
+            const residencial = document.getElementById('residencial').value;
+            if ((residencial === 'Almería' || residencial === 'Navarra') && totalBebidas < 2) {
+                alert('Para ' + residencial + ' requerimos un pedido mínimo de 2 bebidas.');
+                return;
+            }
+
+            const nombre = document.getElementById('nombre').value.trim();
+            const direccion = document.getElementById('direccion').value.trim();
+            const codigo = document.getElementById('codigo').value.trim() || 'N/A';
+            const pago = document.getElementById('pago').value;
+
+            if (!nombre || !direccion || !residencial || !pago) {
+                alert('Faltan datos para preparar tu pedido.');
+                return;
+            }
+
+            const btnSubmit = document.querySelector('.btn-submit');
+            btnSubmit.disabled = true;
+            btnSubmit.textContent = "Procesando...";
+
+            const numeroPedido = Math.floor(10000 + Math.random() * 90000).toString();
+
+            let total = 0;
+            carrito.forEach(p => { total += p.precio * p.cantidad; });
+
+            const datosPedido = {
+                numero: numeroPedido,
+                cliente: nombre,
+                direccion: direccion,
+                codigoAcceso: codigo,
+                residencial: residencial,
+                metodoPago: pago,
+                productos: carrito,
+                total: total,
+                estado: "Pendiente",
+                fecha: serverTimestamp()
+            };
+
+            try {
+                await addDoc(collection(db, "pedidos"), datosPedido);
+                localStorage.setItem("ultimoPedido", numeroPedido);
+                
+                const detallePedido = carrito.map(p => `• ${p.cantidad}x ${p.name}`).join('\n');
+                const msg = `🍹 *NUEVO PEDIDO #${numeroPedido}*\n\n*Detalle:*\n${detallePedido}\n\n*Total a pagar:* Q${total}\n*Residencial:* ${residencial}\n*Dirección:* ${direccion}\n*Código:* ${codigo}\n*Pago:* ${pago}\n\nA nombre de: ${nombre}`;
+
+                const whatsappUrl = `https://wa.me/50246577219?text=${encodeURIComponent(msg)}`;
+                window.location.href = whatsappUrl;
+
+                carrito = [];
+                actualizarContador();
+                closeCart();
+
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Hubo un error al procesar el pedido.");
+            } finally {
+                btnSubmit.disabled = false;
+                btnSubmit.textContent = "Pedir por WhatsApp";
+            }
+        }
+
+        function openTrackingModal() {
+            document.getElementById('trackingModal').style.display = 'flex';
+            const ultimoPedido = localStorage.getItem('ultimoPedido');
+            if (ultimoPedido) {
+                document.getElementById('numeroPedidoBusqueda').value = ultimoPedido;
+            }
+        }
+
+        function closeTrackingModal() {
+            document.getElementById('trackingModal').style.display = 'none';
+        }
+
+        async function buscarPedido() {
+            const numero = document.getElementById('numeroPedidoBusqueda').value.trim();
+            if (!numero) {
+                alert('Ingresa tu número de pedido');
+                return;
+            }
+
+            const resultado = document.getElementById('resultadoPedido');
+            resultado.innerHTML = '<div class="loading" style="padding:20px; font-size:1rem;">Buscando...</div>';
+
+            const q = query(collection(db, "pedidos"), where("numero", "==", numero));
+            const snap = await getDocs(q);
+
+            if (snap.empty) {
+                resultado.innerHTML = '<p style="color: #ef4444; font-weight: 700; text-align: center;">Pedido no encontrado.</p>';
+                return;
+            }
+
+            const pedido = snap.docs[0].data();
+            let productosHtml = '';
+            pedido.productos.forEach(p => {
+                productosHtml += `<li style="margin-bottom:6px;"><span style="font-weight: 800; color: var(--accent-color);">${p.cantidad}x</span> ${p.name}</li>`;
+            });
+
+            let claseEstado = "estado-pendiente";
+            if (pedido.estado === "Preparando") claseEstado = "estado-preparando";
+            if (pedido.estado === "En camino") claseEstado = "estado-camino";
+            if (pedido.estado === "Entregado") claseEstado = "estado-entregado";
+
+            resultado.innerHTML = `
+            <div class="tracking-card">
+                <h3 style="color: var(--primary-color); font-size: 1.2rem; border-bottom: 2px dashed #ffedd5; padding-bottom: 12px; margin-bottom: 12px;">📦 Pedido #${pedido.numero}</h3>
+                <div style="text-align: center;">
+                    <div class="estado-badge ${claseEstado}">${pedido.estado}</div>
+                </div>
+                <p style="margin: 8px 0; font-weight: 600;"><strong>Cliente:</strong> ${pedido.cliente}</p>
+                <p style="margin: 8px 0; color: var(--accent-color); font-size: 1.2rem; font-weight: 800;"><strong>Total:</strong> Q${pedido.total}</p>
+                <h4 style="margin-top: 20px; margin-bottom: 10px; color: var(--text-muted);">Productos:</h4>
+                <ul style="list-style: none; padding: 0;">${productosHtml}</ul>
+            </div>`;
+        }
+
+        window.agregar = agregar;
+        window.agregarConVariante = agregarConVariante;
+        window.eliminar = eliminar;
+        window.openCart = openCart;
+        window.closeCart = closeCart;
+        window.closeVariantModal = closeVariantModal;
+        window.confirmarPedido = confirmarPedido;
+        window.openTrackingModal = openTrackingModal;
+        window.closeTrackingModal = closeTrackingModal;
+        window.buscarPedido = buscarPedido;
+
+        window.addEventListener('click', function (e) {
+            if (e.target === document.getElementById('cartModal')) closeCart();
+            if (e.target === document.getElementById('variantModal')) closeVariantModal();
+            if (e.target === document.getElementById('trackingModal')) closeTrackingModal();
+        });
+    </script>
+</body>
+</html>

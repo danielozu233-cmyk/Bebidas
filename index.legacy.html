@@ -5,9 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="icon" href="favicon.ico">
-    <title>Drinks & Relax | Bebidas preparadas</title>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="premium.css">
+    <title>Bebidas & Relax</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             /* Paleta Beach Bar */
@@ -549,157 +548,35 @@
         .estado-preparando { background: #8b5cf6; }
         .estado-camino { background: #0ea5e9; }
         .estado-entregado { background: #10b981; }
-
-        /* Renovación visual 2026 */
-        :root {
-            --bg-main: #fff8ee;
-            --primary-color: #071a2d;
-            --accent-color: #ff6b35;
-            --accent-hover: #e84e17;
-            --promo-color: #0ea875;
-            --text-main: #17263a;
-            --text-muted: #68788d;
-            --border-color: #e9edf2;
-        }
-        body {
-            background:
-                radial-gradient(circle at 5% 8%, rgba(33, 212, 194, .14), transparent 24rem),
-                radial-gradient(circle at 100% 30%, rgba(255, 107, 53, .13), transparent 28rem),
-                var(--bg-main);
-        }
-        header {
-            padding: 17px 24px;
-            text-align: left;
-            color: white;
-            background: rgba(7, 26, 45, .94);
-            border: 0;
-            box-shadow: 0 8px 30px rgba(7, 26, 45, .18);
-        }
-        .logo { max-width: 1120px; margin: auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-        .logo p { margin: 0; color: white; font-size: 1.15rem; }
-        .alert-banner { color: #baf7ee; background: rgba(33,212,194,.1); border-color: rgba(33,212,194,.25); box-shadow: none; }
-        .hero {
-            max-width: 1120px;
-            min-height: 330px;
-            margin: 34px auto 22px;
-            padding: 48px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            border-radius: 32px;
-            color: white;
-            overflow: hidden;
-            background:
-                linear-gradient(105deg, rgba(7,26,45,.98), rgba(7,26,45,.72) 62%, rgba(7,26,45,.22)),
-                url("https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=1400&q=85") center/cover;
-            box-shadow: 0 20px 55px rgba(7,26,45,.18);
-        }
-        .hero-kicker { color: #9ef0e5; font-size: .78rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
-        .hero h1 { max-width: 680px; margin: 12px 0; font-size: clamp(2.5rem, 7vw, 4.6rem); line-height: .96; letter-spacing: -.055em; }
-        .hero h1 span { color: var(--accent-color); }
-        .hero p { max-width: 520px; color: #c4d1dc; line-height: 1.6; }
-        .hero button { align-self: flex-start; margin-top: 22px; padding: 13px 19px; border: 0; border-radius: 14px; color: white; background: var(--accent-color); font-weight: 800; }
-        .section-title { max-width: 1120px; padding: 28px 20px 8px; font-size: 1.65rem; letter-spacing: -.03em; }
-        .grid, .ofertas-container { max-width: 1120px; }
-        .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
-        .ofertas-container .card { min-width: 320px; }
-        .card { border-radius: 24px; border-color: rgba(7,26,45,.08); box-shadow: 0 10px 30px rgba(7,26,45,.08); }
-        .card:hover { box-shadow: 0 20px 45px rgba(7,26,45,.15); }
-        .card img { height: 245px; }
-        .info { padding: 19px; }
-        .btn-add-icon { background: var(--primary-color); box-shadow: none; }
-        .btn-add-icon:hover { background: var(--accent-color); }
-        .cart-btn { right: 22px; bottom: 24px; border-radius: 17px; padding: 15px 20px; background: var(--primary-color); box-shadow: 0 16px 35px rgba(7,26,45,.3); }
-        .tracking-btn { left: 22px; bottom: 24px; border-radius: 17px; background: white; color: var(--primary-color); border: 1px solid var(--border-color); box-shadow: 0 12px 28px rgba(7,26,45,.12); }
-        .modal { background: rgba(3,14,26,.72); backdrop-filter: blur(8px); }
-        .modal-content { border-radius: 27px; box-shadow: 0 30px 80px rgba(0,0,0,.28); }
-        .total-section { border-radius: 18px; background: var(--primary-color); color: white; }
-        .total-section div { display: flex; flex-direction: column; gap: 3px; }
-        .total-section small { color: #9fb2c5; font-size: .72rem; }
-        .total-section strong { font-size: 1.25rem; }
-        .cart-line-actions { display: flex; align-items: center; gap: 13px; }
-        .qty-control { display: flex; align-items: center; gap: 7px; }
-        .qty-control button { width: 29px; height: 29px; padding: 0; border: 0; border-radius: 9px; background: #edf1f4; color: var(--primary-color); font-weight: 900; }
-        .qty-control button:last-child { color: white; background: var(--primary-color); }
-        .combo-detail { display: block; margin-top: 4px; color: var(--promo-color); font-weight: 700; }
-        .minimum-status { display: none; margin: 0 0 14px; padding: 11px 13px; border-radius: 12px; font-size: .83rem; font-weight: 800; }
-        .minimum-status.warning { background: #fff1eb; color: #b73b13; }
-        .minimum-status.success { background: #eafaf5; color: #087b58; }
-        .app-toast { position: fixed; z-index: 100; left: 50%; bottom: 105px; transform: translate(-50%, 15px); opacity: 0; pointer-events: none; padding: 11px 16px; border-radius: 12px; color: white; background: var(--primary-color); box-shadow: 0 16px 35px rgba(7,26,45,.25); font-weight: 700; transition: .25s; }
-        .app-toast.show { opacity: 1; transform: translate(-50%, 0); }
-        @media (max-width: 820px) {
-            .hero { margin: 22px 16px 10px; padding: 34px 27px; border-radius: 26px; }
-            .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-        }
-        @media (max-width: 520px) {
-            header { padding: 14px 16px; }
-            .logo { align-items: flex-start; flex-direction: column; gap: 7px; }
-            .hero { min-height: 360px; margin: 14px 12px; padding: 30px 23px; }
-            .hero h1 { font-size: 2.75rem; }
-            .grid { padding: 8px 12px 28px; gap: 11px; }
-            .card { border-radius: 18px; }
-            .card img { height: 175px; }
-            .info { padding: 13px; }
-            .ofertas-container { padding-left: 12px; }
-            .ofertas-container .card { min-width: 285px; }
-            .cart-btn { right: 13px; bottom: 14px; }
-            .tracking-btn { left: 13px; bottom: 14px; }
-        }
     </style>
 </head>
 
 <body>
 
-    <div class="announcement" id="service-announcement"><span></span> Servicio disponible · Bebidas preparadas al momento</div>
     <header>
-        <nav class="premium-nav">
-            <button class="brand-lockup" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-                <span class="brand-symbol"><b>D</b><i>&</i><b>R</b></span>
-                <span><strong>DRINKS & RELAX</strong><small>CRAFTED DRINKS</small></span>
-            </button>
-            <div class="nav-links">
-                <button onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Menú</button>
-                <button onclick="document.getElementById('ofertas-wrapper').scrollIntoView({behavior:'smooth'})">Promociones</button>
-            </div>
-            <div class="nav-actions">
-                <button class="nav-track" onclick="openTrackingModal()">⌖ <span>Rastrear</span></button>
-                <button class="nav-order" onclick="openCart()">Mi pedido <span id="nav-count">0</span></button>
-            </div>
-        </nav>
+        <div class="logo">
+            <p>🍹 Drinks & Relax 🌴</p>
+            <div class="alert-banner">Almería y Navarra: Mínimo 2 bebidas</div>
+        </div>
     </header>
-
-    <section class="store-intro">
-        <div>
-            <span>DRINKS & RELAX</span>
-            <h1>¿Qué vas a tomar hoy?</h1>
-            <p>Selecciona tus bebidas y completa el pedido desde el carrito.</p>
-        </div>
-        <div class="store-info">
-            <div id="customer-service-status" class="service-status-card active"><b>●</b><span><strong>Servicio activo</strong><small>Pedidos disponibles</small></span></div>
-            <div><b>2</b><span><strong>Pedido mínimo</strong><small>Almería y Navarra</small></span></div>
-        </div>
-    </section>
 
     <div id="ofertas-wrapper" style="display: none;">
         <div class="section-title">🔥 Combos y Promos</div>
         <div class="ofertas-container" id="ofertas"></div>
     </div>
 
-    <section class="menu-heading">
-        <div><span class="overline">PRODUCTOS DISPONIBLES</span><h2>Menú de bebidas</h2></div>
-        <p>Selecciona una bebida para agregarla a tu pedido.</p>
-    </section>
+    <div class="section-title">📖 Menú Principal</div>
     <div class="grid" id="products">
         <div class="loading">Preparando barra...</div>
     </div>
 
     <button class="cart-btn" onclick="openCart()">
-        <span class="cart-button-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M3 4h2l2.1 9.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 1.9-1.4L20 8H7M10 19.2h.01M17 19.2h.01"/></svg>
-        </span>
-        <span class="cart-button-copy"><small>Tu pedido</small><strong id="cart-amount">Agregar bebidas</strong></span>
-        <span class="cart-badge" id="count">0</span>
+        🛒 <span class="cart-badge" id="count">0</span>
     </button>
+    <button class="tracking-btn" onclick="openTrackingModal()">
+        📦 Rastrear
+    </button>
+
     <div class="modal" id="variantModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -713,30 +590,22 @@
     <div class="modal" id="cartModal">
         <div class="modal-content">
             <div class="modal-header">
-                <div><small class="modal-eyebrow">CHECKOUT</small><h2>Tu Pedido</h2></div>
+                <h2>Tu Pedido</h2>
                 <button class="close-btn" onclick="closeCart()">✕</button>
             </div>
 
-            <div class="checkout-progress"><span class="active">1</span><i></i><span>2</span><i></i><span>3</span></div>
-            <div class="checkout-labels"><b>Resumen</b><b>Entrega</b><b>Confirmar</b></div>
             <div class="cart-items-container" id="cartItems"></div>
 
             <div class="total-section">
-                <div>
-                    <small>Bebidas reales incluidas</small>
-                    <strong id="real-drinks-count">0</strong>
-                </div>
-                <div style="text-align:right;">
-                    <small>Total</small>
-                    <strong>Q<span id="total">0</span></strong>
-                </div>
+                <span>Total:</span>
+                <span>Q<span id="total">0</span></span>
             </div>
 
             <input type="text" id="nombre" placeholder="Tu nombre completo">
             <textarea id="direccion" placeholder="Número de Casa (Ej. Manzana X, Casa Y)"></textarea>
             <input type="text" id="codigo" placeholder="Código de acceso (Si aplica)">
 
-            <select id="residencial" onchange="actualizarAvisoMinimo()">
+            <select id="residencial">
                 <option value="" disabled selected>Selecciona tu residencial...</option>
                 <option value="Almería">Almería</option>
                 <option value="Navarra">Navarra</option>
@@ -749,12 +618,9 @@
                 <option value="Transferencia">Transferencia</option>
             </select>
 
-            <div id="minimum-status" class="minimum-status"></div>
             <button class="btn-submit" onclick="confirmarPedido()">Pedir por WhatsApp</button>
         </div>
     </div>
-
-    <div id="app-toast" class="app-toast"></div>
 
     <div class="modal" id="trackingModal">
         <div class="modal-content">
@@ -771,7 +637,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import {
-            getFirestore, collection, doc, onSnapshot, addDoc, serverTimestamp, query, where, getDocs
+            getFirestore, collection, onSnapshot, addDoc, serverTimestamp, query, where, getDocs
         } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
         
         const firebaseConfig = {
@@ -790,35 +656,6 @@
         let allProducts = [];
         let carrito = [];
         let productoSeleccionadoId = null;
-        let promoSeleccionadaId = null;
-        let servicioActivo = true;
-        let mensajeServicio = 'Pedidos disponibles';
-
-        onSnapshot(doc(db, "configuracion", "tienda"), (snapshot) => {
-            const config = snapshot.exists() ? snapshot.data() : {};
-            servicioActivo = config.servicioActivo !== false;
-            mensajeServicio = config.mensajeServicio || (servicioActivo ? 'Pedidos disponibles' : 'No estamos recibiendo pedidos');
-            actualizarEstadoServicio();
-            if (allProducts.length) renderCatalogos();
-        });
-
-        function actualizarEstadoServicio() {
-            const statusCard = document.getElementById('customer-service-status');
-            const announcement = document.getElementById('service-announcement');
-            const submitButton = document.querySelector('[onclick="confirmarPedido()"]');
-            const cartButton = document.querySelector('.cart-btn');
-            statusCard.classList.toggle('active', servicioActivo);
-            statusCard.classList.toggle('closed', !servicioActivo);
-            statusCard.querySelector('strong').textContent = servicioActivo ? 'Servicio activo' : 'Servicio cerrado';
-            statusCard.querySelector('small').textContent = mensajeServicio;
-            announcement.classList.toggle('closed', !servicioActivo);
-            announcement.innerHTML = `<span></span> ${servicioActivo ? 'Servicio disponible · Bebidas preparadas al momento' : mensajeServicio}`;
-            if (submitButton) {
-                submitButton.disabled = !servicioActivo;
-                submitButton.textContent = servicioActivo ? 'Pedir por WhatsApp' : 'Servicio cerrado';
-            }
-            if (cartButton) cartButton.classList.toggle('service-closed', !servicioActivo);
-        }
 
         onSnapshot(collection(db, "productos"), (snapshot) => {
             allProducts = [];
@@ -863,31 +700,25 @@
 
                 // Lógica de Agotado
                 const estaAgotado = p.disponible === false;
-                const noDisponible = estaAgotado || !servicioActivo;
-                const claseAgotado = estaAgotado ? 'agotado' : !servicioActivo ? 'servicio-cerrado' : '';
-                const badgeAgotado = estaAgotado
-                    ? '<div class="agotado-badge">AGOTADO</div>'
-                    : !servicioActivo ? '<div class="agotado-badge closed">SERVICIO CERRADO</div>' : '';
-                const btnDisabled = noDisponible ? 'disabled' : '';
-                const funcionClick = noDisponible ? '' : `onclick="agregar('${p.id}')"`;
+                const claseAgotado = estaAgotado ? 'agotado' : '';
+                const badgeAgotado = estaAgotado ? '<div class="agotado-badge">AGOTADO</div>' : '';
+                const btnDisabled = estaAgotado ? 'disabled' : '';
+                const funcionClick = estaAgotado ? '' : `onclick="agregar('${p.id}')"`;
 
                 // Badge de Promo (Solo para las que van en el carrusel superior)
-                const badgePromo = p.esOferta && !noDisponible ? '<div class="promo-badge">EDICIÓN ESPECIAL</div>' : '';
-                const unidadesBadge = (p.unidadesIncluidas || 1) > 1 ? `<div class="units-badge">Incluye ${p.unidadesIncluidas}</div>` : '';
+                const badgePromo = p.esOferta && !estaAgotado ? '<div class="promo-badge">PROMO</div>' : '';
 
                 const cardHTML = `
-                <div class="card ${claseAgotado}" data-product-id="${p.id}" data-search="${`${p.name} ${p.desc}`.toLowerCase()}" style="animation-delay: ${delay}s">
+                <div class="card ${claseAgotado}" style="animation-delay: ${delay}s">
                     ${badgeAgotado}
                     ${badgePromo}
-                    ${unidadesBadge}
-                    <div class="image-shell"><img src="${p.img}" alt="${p.name}" loading="lazy"></div>
+                    <img src="${p.img}" alt="${p.name}" loading="lazy">
                     <div class="info">
-                        <span class="product-kicker">${p.esOferta ? 'COMBO DE LA CASA' : 'PREPARADO AL MOMENTO'}</span>
                         <h3>${p.name}</h3>
                         <p class="desc">${p.desc}</p>
                         <div class="price-row">
-                            <div><small>Precio</small><div class="price">${precioTexto}</div></div>
-                            <button class="btn-add-icon" ${btnDisabled} ${funcionClick}><span>Agregar</span> +</button>
+                            <div class="price">${precioTexto}</div>
+                            <button class="btn-add-icon" ${btnDisabled} ${funcionClick}>+</button>
                         </div>
                     </div>
                 </div>`;
@@ -907,20 +738,13 @@
             if (containerMenu.innerHTML === '') {
                 containerMenu.innerHTML = '<div class="loading">No hay bebidas disponibles.</div>';
             }
-            if (window.refreshPremiumCatalog) window.refreshPremiumCatalog();
         }
 
         function agregar(id) {
-            if (!servicioActivo) {
-                mostrarToast(mensajeServicio);
-                return;
-            }
             const producto = allProducts.find(p => p.id === id);
             if (!producto || producto.disponible === false) return;
 
-            if (producto.tipo === 'promo') {
-                abrirSelectorPromo(producto);
-            } else if (producto.hasVariants && producto.variants) {
+            if (producto.hasVariants && producto.variants) {
                 productoSeleccionadoId = id;
                 document.getElementById('variantTitle').textContent = `Opciones para ${producto.name}`;
                 const container = document.getElementById('variantOptions');
@@ -935,124 +759,8 @@
                 });
                 document.getElementById('variantModal').style.display = 'flex';
             } else {
-                agregarAlCarrito(producto.name, producto.precio, producto.unidadesIncluidas || 1, producto.id);
+                agregarAlCarrito(producto.name, producto.precio);
             }
-        }
-
-        function abrirSelectorPromo(promo) {
-            promoSeleccionadaId = promo.id;
-            const cantidad = Math.max(1, parseInt(promo.promoCantidad || promo.unidadesIncluidas, 10) || 1);
-            const elegibles = allProducts.filter(producto =>
-                producto.tipo !== 'promo' &&
-                producto.disponible !== false &&
-                (promo.promoProductIds || []).includes(producto.id) &&
-                obtenerVariantesPermitidasPromo(promo, producto).length > 0
-            );
-            document.getElementById('variantTitle').textContent = promo.name;
-            const container = document.getElementById('variantOptions');
-            if (!elegibles.length) {
-                container.innerHTML = '<div class="promo-empty">Esta promoción no tiene bebidas disponibles en este momento.</div>';
-                document.getElementById('variantModal').style.display = 'flex';
-                return;
-            }
-            const options = elegibles.map(producto => {
-                const allowed = obtenerVariantesPermitidasPromo(promo, producto);
-                const detail = producto.hasVariants && allowed.length === 1 ? ` — ${allowed[0].variant.name}` : '';
-                return `<option value="${producto.id}">${producto.name}${detail}</option>`;
-            }).join('');
-            container.innerHTML = `
-                <div class="promo-customer-intro">
-                    <strong>Elige ${cantidad} ${cantidad === 1 ? 'bebida' : 'bebidas'}</strong>
-                    <p>Puedes repetir una bebida y escoger sus opciones si están disponibles.</p>
-                </div>
-                <div class="promo-selection-slots">
-                    ${Array.from({ length: cantidad }, (_, index) => `
-                        <div class="promo-slot" data-slot="${index}">
-                            <span class="promo-slot-number">${index + 1}</span>
-                            <div>
-                                <label>Bebida</label>
-                                <select class="promo-product-select" onchange="actualizarVariantePromo(${index})">
-                                    <option value="">Selecciona una bebida...</option>
-                                    ${options}
-                                </select>
-                                <div class="promo-variant-holder"></div>
-                            </div>
-                        </div>`).join('')}
-                </div>
-                <div class="promo-fixed-total"><span>Precio de la promoción</span><strong>Q${promo.precio}</strong></div>
-                <button class="btn-submit promo-confirm-btn" onclick="confirmarSeleccionPromo()">Agregar promoción al pedido</button>`;
-            document.getElementById('variantModal').style.display = 'flex';
-        }
-
-        function obtenerVariantesPermitidasPromo(promo, producto) {
-            const variants = Array.isArray(producto.variants) ? producto.variants : [];
-            if (!producto.hasVariants || !variants.length) return [{ index: null, variant: null }];
-            const savedRule = promo.promoVariantRules && promo.promoVariantRules[producto.id];
-            const indexes = Array.isArray(savedRule) ? savedRule : variants.map((_, index) => index);
-            return indexes
-                .filter(index => variants[index])
-                .map(index => ({ index, variant: variants[index] }));
-        }
-
-        function actualizarVariantePromo(slotIndex) {
-            const slot = document.querySelector(`.promo-slot[data-slot="${slotIndex}"]`);
-            const productId = slot.querySelector('.promo-product-select').value;
-            const producto = allProducts.find(item => item.id === productId);
-            const promo = allProducts.find(item => item.id === promoSeleccionadaId);
-            const holder = slot.querySelector('.promo-variant-holder');
-            if (!producto || !producto.hasVariants || !Array.isArray(producto.variants) || !producto.variants.length) {
-                holder.innerHTML = '';
-                return;
-            }
-            const allowed = obtenerVariantesPermitidasPromo(promo, producto);
-            if (!allowed.length) {
-                holder.innerHTML = '<small class="promo-option-error">Esta bebida no tiene opciones válidas en la promoción.</small>';
-                return;
-            }
-            holder.innerHTML = `
-                <label>Opción</label>
-                <select class="promo-variant-select ${allowed.length === 1 ? 'locked' : ''}" ${allowed.length === 1 ? 'disabled' : ''}>
-                    ${allowed.length > 1 ? '<option value="">Selecciona una opción...</option>' : ''}
-                    ${allowed.map(({ variant, index }) => `<option value="${index}">${variant.name}</option>`).join('')}
-                </select>
-                ${allowed.length === 1 ? '<small class="promo-locked-note">Opción incluida en esta promoción</small>' : ''}`;
-        }
-
-        function confirmarSeleccionPromo() {
-            const promo = allProducts.find(producto => producto.id === promoSeleccionadaId);
-            if (!promo) return;
-            const slots = Array.from(document.querySelectorAll('.promo-slot'));
-            const seleccion = [];
-            for (const slot of slots) {
-                const productId = slot.querySelector('.promo-product-select').value;
-                const producto = allProducts.find(item => item.id === productId);
-                if (!producto) {
-                    mostrarToast('Completa todas las bebidas de la promoción');
-                    return;
-                }
-                let nombre = producto.name;
-                let variantName = '';
-                const variantSelect = slot.querySelector('.promo-variant-select');
-                if (variantSelect) {
-                    if (variantSelect.value === '') {
-                        mostrarToast(`Elige una opción para ${producto.name}`);
-                        return;
-                    }
-                    const variante = producto.variants[Number(variantSelect.value)];
-                    variantName = variante.name;
-                    nombre += ` (${variantName})`;
-                }
-                seleccion.push({ productId, name: producto.name, variantName, displayName: nombre });
-            }
-            const detalle = seleccion.map(item => item.displayName).join(' + ');
-            agregarAlCarrito(
-                `${promo.name}: ${detalle}`,
-                promo.precio,
-                promo.promoCantidad || promo.unidadesIncluidas || seleccion.length,
-                promo.id,
-                { promoId: promo.id, promoNombre: promo.name, seleccion }
-            );
-            closeVariantModal();
         }
 
         function agregarConVariante(vIdx) {
@@ -1060,68 +768,29 @@
             const variante = producto.variants[vIdx];
             const nombreCompleto = `${producto.name} (${variante.name})`;
 
-            agregarAlCarrito(nombreCompleto, variante.precio, producto.unidadesIncluidas || 1, producto.id);
+            agregarAlCarrito(nombreCompleto, variante.precio);
             closeVariantModal();
         }
 
-        function agregarAlCarrito(nombre, precio, unidadesIncluidas = 1, productId = '', extraData = {}) {
-            if (!servicioActivo) {
-                mostrarToast(mensajeServicio);
-                return;
-            }
+        function agregarAlCarrito(nombre, precio) {
             const itemExistente = carrito.find(item => item.name === nombre);
             if (itemExistente) {
                 itemExistente.cantidad++;
             } else {
-                carrito.push({
-                    name: nombre,
-                    precio: precio,
-                    cantidad: 1,
-                    unidadesIncluidas: Math.max(1, parseInt(unidadesIncluidas, 10) || 1),
-                    productId: productId,
-                    ...extraData
-                });
+                carrito.push({ name: nombre, precio: precio, cantidad: 1 });
             }
-            guardarCarrito();
             actualizarContador();
-            mostrarToast(`${nombre} agregado al pedido`);
         }
 
         function eliminar(index) {
             carrito.splice(index, 1);
-            guardarCarrito();
             actualizarContador();
             renderCart();
-        }
-
-        function cambiarCantidad(index, cambio) {
-            if (!carrito[index]) return;
-            carrito[index].cantidad += cambio;
-            if (carrito[index].cantidad <= 0) carrito.splice(index, 1);
-            guardarCarrito();
-            actualizarContador();
-            renderCart();
-        }
-
-        function guardarCarrito() {
-            localStorage.setItem('drinksRelaxCart', JSON.stringify(carrito));
-        }
-
-        function contarBebidasReales() {
-            return carrito.reduce((sum, item) => {
-                const incluidas = Math.max(1, parseInt(item.unidadesIncluidas, 10) || 1);
-                return sum + (item.cantidad * incluidas);
-            }, 0);
         }
 
         function actualizarContador() {
             const totalItems = carrito.reduce((sum, item) => sum + item.cantidad, 0);
             document.getElementById('count').textContent = totalItems;
-            const navCount = document.getElementById('nav-count');
-            if (navCount) navCount.textContent = totalItems;
-            const cartAmount = document.getElementById('cart-amount');
-            const totalCarrito = carrito.reduce((sum, item) => sum + (Number(item.precio) * item.cantidad), 0);
-            if (cartAmount) cartAmount.textContent = totalItems ? `Q${totalCarrito} · ${totalItems} ${totalItems === 1 ? 'producto' : 'productos'}` : 'Agregar bebidas';
         }
 
         function openCart() {
@@ -1136,7 +805,6 @@
         function closeVariantModal() {
             document.getElementById('variantModal').style.display = 'none';
             productoSeleccionadoId = null;
-            promoSeleccionadaId = null;
         }
 
         function renderCart() {
@@ -1147,32 +815,22 @@
                 html += `
                 <div class="line">
                     <div>
+                        <span class="line-qty">${p.cantidad}x</span>
                         <span style="font-weight: 700;">${p.name}</span>
-                        ${p.unidadesIncluidas > 1 ? `<small class="combo-detail">Cada combo incluye ${p.unidadesIncluidas} bebidas</small>` : ''}
                     </div>
-                    <div class="cart-line-actions">
+                    <div style="display: flex; align-items: center;">
                         <span style="font-weight: 800; color: var(--primary-color);">Q${subtotal}</span>
-                        <div class="qty-control">
-                            <button onclick="cambiarCantidad(${index}, -1)">−</button>
-                            <strong>${p.cantidad}</strong>
-                            <button onclick="cambiarCantidad(${index}, 1)">+</button>
-                        </div>
+                        <button class="line-remove" onclick="eliminar(${index})">✕</button>
                     </div>
                 </div>`;
                 total += subtotal;
             });
             document.getElementById('cartItems').innerHTML = html || '<p style="text-align:center; color:#94a3b8; padding: 30px 0; font-weight: 600;">Tu vaso está vacío 🍹</p>';
             document.getElementById('total').textContent = total;
-            document.getElementById('real-drinks-count').textContent = contarBebidasReales();
-            actualizarAvisoMinimo();
         }
 
         async function confirmarPedido() {
-            if (!servicioActivo) {
-                alert(mensajeServicio);
-                return;
-            }
-            const totalBebidas = contarBebidasReales();
+            const totalBebidas = carrito.reduce((sum, item) => sum + item.cantidad, 0);
 
             if (totalBebidas === 0) {
                 alert('Por favor, agrega al menos una bebida a tu pedido.');
@@ -1212,7 +870,6 @@
                 residencial: residencial,
                 metodoPago: pago,
                 productos: carrito,
-                totalBebidas: totalBebidas,
                 total: total,
                 estado: "Pendiente",
                 fecha: serverTimestamp()
@@ -1229,7 +886,6 @@
                 window.location.href = whatsappUrl;
 
                 carrito = [];
-                guardarCarrito();
                 actualizarContador();
                 closeCart();
 
@@ -1237,8 +893,8 @@
                 console.error("Error:", error);
                 alert("Hubo un error al procesar el pedido.");
             } finally {
-                btnSubmit.disabled = !servicioActivo;
-                btnSubmit.textContent = servicioActivo ? "Pedir por WhatsApp" : "Servicio cerrado";
+                btnSubmit.disabled = false;
+                btnSubmit.textContent = "Pedir por WhatsApp";
             }
         }
 
@@ -1296,45 +952,9 @@
             </div>`;
         }
 
-        function actualizarAvisoMinimo() {
-            const aviso = document.getElementById('minimum-status');
-            const residencial = document.getElementById('residencial').value;
-            const requiereMinimo = residencial === 'Almería' || residencial === 'Navarra';
-            if (!requiereMinimo) {
-                aviso.style.display = 'none';
-                return;
-            }
-            const totalBebidas = contarBebidasReales();
-            aviso.style.display = 'block';
-            aviso.className = totalBebidas >= 2 ? 'minimum-status success' : 'minimum-status warning';
-            aviso.textContent = totalBebidas >= 2
-                ? `✓ Cumples el mínimo con ${totalBebidas} bebidas incluidas.`
-                : `Te falta ${2 - totalBebidas} bebida para completar el mínimo de esta residencial.`;
-        }
-
-        let toastTimer;
-        function mostrarToast(mensaje) {
-            const toast = document.getElementById('app-toast');
-            toast.textContent = mensaje;
-            toast.classList.add('show');
-            clearTimeout(toastTimer);
-            toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
-        }
-
-        try {
-            const carritoGuardado = JSON.parse(localStorage.getItem('drinksRelaxCart') || '[]');
-            if (Array.isArray(carritoGuardado)) carrito = carritoGuardado;
-        } catch (error) {
-            carrito = [];
-        }
-        actualizarContador();
-
         window.agregar = agregar;
         window.agregarConVariante = agregarConVariante;
-        window.actualizarVariantePromo = actualizarVariantePromo;
-        window.confirmarSeleccionPromo = confirmarSeleccionPromo;
         window.eliminar = eliminar;
-        window.cambiarCantidad = cambiarCantidad;
         window.openCart = openCart;
         window.closeCart = closeCart;
         window.closeVariantModal = closeVariantModal;
@@ -1342,7 +962,6 @@
         window.openTrackingModal = openTrackingModal;
         window.closeTrackingModal = closeTrackingModal;
         window.buscarPedido = buscarPedido;
-        window.actualizarAvisoMinimo = actualizarAvisoMinimo;
 
         window.addEventListener('click', function (e) {
             if (e.target === document.getElementById('cartModal')) closeCart();
@@ -1350,6 +969,5 @@
             if (e.target === document.getElementById('trackingModal')) closeTrackingModal();
         });
     </script>
-    <script src="premium.js"></script>
 </body>
 </html>

@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="favicon.ico">
     <title>Panel Admin - Bebidas Preparadas</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin-premium.css">
     <style>
         :root {
             --bg-main: #f8fafc;
@@ -372,23 +374,102 @@
             50% { transform: scale(1.01); box-shadow: 0 0 15px rgba(245, 158, 11, .4); }
             100% { transform: scale(1); box-shadow: 0 0 0 rgba(245, 158, 11, 0); }
         }
+
+        /* Panel renovado */
+        :root {
+            --bg-main: #f3f6f8;
+            --primary-color: #071a2d;
+            --accent-color: #ff6b35;
+            --text-main: #17263a;
+            --text-muted: #68788d;
+            --border-color: #e5eaf0;
+            --success: #0ba777;
+        }
+        body { background: radial-gradient(circle at 100% 0, rgba(33,212,194,.11), transparent 28rem), var(--bg-main); }
+        header {
+            padding: 22px 24px;
+            color: white;
+            background: rgba(7,26,45,.97);
+            border: 0;
+            box-shadow: 0 10px 35px rgba(7,26,45,.2);
+        }
+        header h1 { color: white; font-size: 1.2rem; letter-spacing: .06em; }
+        .tabs-nav { max-width: 590px; background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.12); }
+        .tab-btn { color: #aebdcc; }
+        .tab-btn.active { color: var(--primary-color); background: white; }
+        .container { max-width: 1120px; margin-top: 30px; }
+        .metrics-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+        .metric-card { padding: 23px; text-align: left; border: 0; border-radius: 20px; box-shadow: 0 10px 30px rgba(7,26,45,.07); }
+        .metric-card .val { margin-top: 8px; font-size: 1.85rem; }
+        .metric-card.pedidos-activos { border-top: 4px solid #8b5cf6; }
+        .metric-card.pedidos-activos .val { color: #7652dc; }
+        .admin-box { padding: 24px; border: 0; border-radius: 22px; box-shadow: 0 10px 30px rgba(7,26,45,.07); }
+        .admin-box h2 { border-left-color: var(--accent-color); font-size: 1rem; }
+        input, select, textarea { border-radius: 12px; padding: 13px 14px; background: #f8fafb; }
+        input:focus, select:focus, textarea:focus { border-color: #21d4c2; box-shadow: 0 0 0 3px rgba(33,212,194,.12); }
+        .btn-primary { padding: 14px; border-radius: 13px; background: var(--accent-color); box-shadow: 0 8px 20px rgba(255,107,53,.22); }
+        .order-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 18px; }
+        .order-filters { display: flex; flex-wrap: wrap; gap: 7px; }
+        .order-filter { padding: 8px 11px; border: 1px solid var(--border-color); border-radius: 999px; color: var(--text-muted); background: white; font-size: .76rem; }
+        .order-filter.active { color: white; border-color: var(--primary-color); background: var(--primary-color); }
+        #order-search { width: 310px; margin: 0; }
+        .order-card { border: 0; border-left: 5px solid #f59e0b; border-radius: 18px; box-shadow: 0 8px 24px rgba(7,26,45,.08); }
+        .order-card.pendiente { border-width: 0 0 0 5px; animation: none; }
+        .order-card.preparando { border-left: 5px solid #8b5cf6; }
+        .order-card.camino { border-left: 5px solid #2563eb; }
+        .order-card.entregado { border-left: 5px solid var(--success); opacity: .72; }
+        .units-field { margin: 2px 0 16px; padding: 15px; border-radius: 14px; color: #075e56; background: #e9fbf8; border: 1px solid #b9eee7; }
+        .units-field p { margin: 5px 0 9px; color: #3f7772; font-size: .8rem; }
+        .units-field input { max-width: 160px; margin: 0; background: white; }
+        .item-list-row { gap: 15px; }
+        @media (max-width: 850px) {
+            .metrics-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+            .order-toolbar { align-items: stretch; flex-direction: column; }
+            #order-search { width: 100%; }
+        }
+        @media (max-width: 560px) {
+            header { padding: 18px 13px; }
+            header h1 { font-size: 1rem; }
+            .container { padding: 0 11px; }
+            .metrics-grid { gap: 10px; }
+            .metric-card { padding: 16px; }
+            .metric-card .val { font-size: 1.35rem; }
+            .admin-box { padding: 17px; border-radius: 18px; }
+            .item-list-row { align-items: flex-start; flex-direction: column; }
+            .item-actions { width: 100%; justify-content: flex-start; flex-wrap: wrap; }
+            .order-footer { align-items: flex-start; flex-direction: column; gap: 12px; }
+        }
     </style>
 </head>
 
 <body>
 
     <header>
-        <h1>🎛️ PANEL DE ADMINISTRACIÓN</h1>
-        <div class="tabs-nav">
-            <button class="tab-btn active" onclick="switchTab('dashboard')">📊 Métricas</button>
-            <button class="tab-btn" onclick="switchTab('productos')">🍹 Productos</button>
-            <button class="tab-btn" onclick="switchTab('finanzas')">💸 Finanzas</button>
+        <div class="admin-brand">
+            <span class="admin-monogram">D<span>&</span>R</span>
+            <div><strong>DRINKS & RELAX</strong><small>ADMINISTRACIÓN</small></div>
         </div>
+        <div class="tabs-nav">
+            <button class="tab-btn active" onclick="switchTab('dashboard')">◫ Pedidos</button>
+            <button class="tab-btn" onclick="switchTab('productos')">◇ Productos</button>
+            <button class="tab-btn" onclick="switchTab('finanzas')">◌ Finanzas</button>
+        </div>
+        <div class="admin-status"><span></span><div><small>SISTEMA</small><strong>En línea</strong></div></div>
     </header>
 
     <div class="container">
 
         <div id="tab-dashboard" class="tab-content active">
+            <div class="page-intro">
+                <div><h1>Resumen general</h1><p>Pedidos, ingresos y gastos registrados.</p></div>
+                <div class="admin-overview-tools">
+                    <div class="service-admin-card active" id="service-admin-card">
+                        <div><span class="service-dot"></span><p><strong id="admin-service-label">Servicio activo</strong><small id="admin-service-message">Los clientes pueden realizar pedidos.</small></p></div>
+                        <button id="service-toggle" onclick="toggleStoreService()">Cerrar servicio</button>
+                    </div>
+                    <div class="live-clock"><small>HORA LOCAL</small><strong id="admin-clock">--:--</strong></div>
+                </div>
+            </div>
             <div class="metrics-grid">
                 <div class="metric-card ingresos">
                     <h3>Ingresos Mensuales</h3>
@@ -402,10 +483,23 @@
                     <h3>Balance Neto</h3>
                     <div class="val">Q<span id="lbl-balance">0.00</span></div>
                 </div>
+                <div class="metric-card pedidos-activos">
+                    <h3>Pedidos activos</h3>
+                    <div class="val" id="lbl-pedidos-activos">0</div>
+                </div>
             </div>
 
             <div class="admin-box">
-                <h2>📥 Gestión de Pedidos en Tiempo Real</h2>
+                <div class="box-heading"><div><h2>Pedidos</h2></div><div class="live-pill"><i></i> En vivo</div></div>
+                <div class="order-toolbar">
+                    <div class="order-filters">
+                        <button class="order-filter active" onclick="filterOrders('Todos', this)">Todos</button>
+                        <button class="order-filter" onclick="filterOrders('Pendiente', this)">Pendientes</button>
+                        <button class="order-filter" onclick="filterOrders('Preparando', this)">Preparando</button>
+                        <button class="order-filter" onclick="filterOrders('En camino', this)">En camino</button>
+                    </div>
+                    <input id="order-search" type="search" placeholder="Buscar cliente, pedido o residencial..." oninput="applyOrderFilters()">
+                </div>
                 <div id="admin-orders-list">
                     <p style="text-align:center; color:var(--text-muted); padding: 20px 0;">Cargando pedidos activos...</p>
                 </div>
@@ -418,34 +512,67 @@
         </div>
 
         <div id="tab-productos" class="tab-content">
+            <div class="page-intro compact">
+                <div><h1>Productos</h1><p>Agrega, edita y cambia la disponibilidad del menú.</p></div>
+            </div>
             <div class="admin-box">
-                <h2 id="form-product-title">Agregar Nuevo Producto</h2>
+                <div class="product-form-header">
+                    <div>
+                        <h2 id="form-product-title">Agregar producto</h2>
+                        <p id="form-product-help">Crea una bebida individual con su precio y variantes.</p>
+                    </div>
+                    <div class="type-switch">
+                        <button type="button" class="type-switch-btn active" data-type="producto" onclick="setProductType('producto')">Bebida</button>
+                        <button type="button" class="type-switch-btn" data-type="promo" onclick="setProductType('promo')">Promoción</button>
+                    </div>
+                </div>
                 <form id="productForm">
                     <input type="hidden" id="prod-id">
+                    <input type="hidden" id="prod-tipo" value="producto">
                     <input type="text" id="prod-nombre" placeholder="Nombre de la bebida (Ej: Azulito)" required>
                     <textarea id="prod-descripcion" placeholder="Descripción corta y provocativa para el cliente..." required></textarea>
                     <input type="url" id="prod-imagen" placeholder="URL de la Imagen (Unsplash o enlace directo)" required>
 
-                    <label class="checkbox-container">
-                        <input type="checkbox" id="prod-has-variants" onchange="toggleVariantsUI()">
-                        🎨 ¿Este producto tiene variantes? (Ej: Sin alcohol, 2oz, 4oz)
-                    </label>
+                    <div id="normal-product-fields">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="prod-has-variants" onchange="toggleVariantsUI()">
+                            ¿Tiene opciones? Por ejemplo: Sin alcohol, 2 oz o 4 oz
+                        </label>
 
-                    <label class="checkbox-container" style="background: #fef08a; border-color: #fde047; color: #854d0e;">
-                        <input type="checkbox" id="prod-es-oferta">
-                        🔥 Mostrar en la sección superior de "Combos y Promos"
-                    </label>
+                        <div id="box-single-price">
+                            <input type="number" id="prod-precio" placeholder="Precio base (Q)" min="0">
+                        </div>
 
-                    <div id="box-single-price">
-                        <input type="number" id="prod-precio" placeholder="Precio Base (Q)" min="0">
+                        <div id="box-variants" style="display: none;">
+                            <button type="button" class="btn-secondary" onclick="addVariantRow()">+ Añadir opción</button>
+                            <div id="variants-container"></div>
+                        </div>
                     </div>
 
-                    <div id="box-variants" style="display: none;">
-                        <button type="button" class="btn-secondary" onclick="addVariantRow()">+ Añadir Variante</button>
-                        <div id="variants-container"></div>
+                    <div id="promo-fields" style="display:none;">
+                        <div class="promo-builder-intro">
+                            <strong>Configura la promoción</strong>
+                            <p>El cliente elegirá la cantidad indicada entre las bebidas que marques abajo.</p>
+                        </div>
+                        <div class="promo-settings">
+                            <label>Cantidad que puede elegir
+                                <input type="number" id="promo-cantidad" value="2" min="1" max="12">
+                            </label>
+                            <label>Precio total de la promoción
+                                <input type="number" id="promo-precio" placeholder="Ej. 45" min="0">
+                            </label>
+                        </div>
+                        <div class="eligible-products-head">
+                            <div><strong>Bebidas disponibles para elegir</strong><small>Marca todas las que participan en esta promoción.</small></div>
+                            <button type="button" class="btn-secondary" onclick="toggleAllPromoProducts()">Seleccionar todas</button>
+                        </div>
+                        <div id="promo-products-picker" class="promo-products-picker">
+                            <p class="form-empty">Primero agrega bebidas al catálogo.</p>
+                        </div>
                     </div>
 
-                    <button type="submit" class="btn-primary" style="margin-top: 15px;">Guardar Producto</button>
+                    <button type="submit" class="btn-primary" id="save-product-btn" style="margin-top: 15px;">Guardar producto</button>
+                    <button type="button" class="btn-cancel-edit" id="cancel-product-edit" onclick="resetProductForm()" style="display:none;">Cancelar edición</button>
                 </form>
             </div>
 
@@ -456,6 +583,9 @@
         </div>
 
         <div id="tab-finanzas" class="tab-content">
+            <div class="page-intro compact">
+                <div><h1>Finanzas</h1><p>Registra y consulta los movimientos del negocio.</p></div>
+            </div>
             <div class="admin-box">
                 <h2>Registrar Flujo de Caja</h2>
                 <form id="financeForm">
@@ -482,7 +612,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, onSnapshot, doc, setDoc, updateDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCi2cMCDPj6UTMJTDiNQsNmUDjRB8xCkiM",
@@ -502,22 +632,68 @@
         const ordersRef = collection(db, "pedidos"); 
 
         let ingresosPedidos = 0;
+        let adminProducts = [];
+        let storeServiceActive = true;
+
+        const storeConfigRef = doc(db, "configuracion", "tienda");
+        onSnapshot(storeConfigRef, (snapshot) => {
+            const config = snapshot.exists() ? snapshot.data() : {};
+            storeServiceActive = config.servicioActivo !== false;
+            renderStoreServiceControl(config.mensajeServicio);
+        });
+
+        function renderStoreServiceControl(customMessage = '') {
+            const card = document.getElementById('service-admin-card');
+            const label = document.getElementById('admin-service-label');
+            const message = document.getElementById('admin-service-message');
+            const button = document.getElementById('service-toggle');
+            card.classList.toggle('active', storeServiceActive);
+            card.classList.toggle('closed', !storeServiceActive);
+            label.textContent = storeServiceActive ? 'Servicio activo' : 'Servicio cerrado';
+            message.textContent = customMessage || (storeServiceActive
+                ? 'Los clientes pueden realizar pedidos.'
+                : 'Los pedidos nuevos están bloqueados.');
+            button.textContent = storeServiceActive ? 'Cerrar servicio' : 'Abrir servicio';
+        }
+
+        window.toggleStoreService = async function () {
+            const nextState = !storeServiceActive;
+            const button = document.getElementById('service-toggle');
+            button.disabled = true;
+            button.textContent = 'Guardando...';
+            try {
+                await setDoc(storeConfigRef, {
+                    servicioActivo: nextState,
+                    mensajeServicio: nextState ? 'Pedidos disponibles' : 'El servicio está cerrado temporalmente',
+                    updatedAt: serverTimestamp()
+                }, { merge: true });
+            } catch (error) {
+                alert('No se pudo cambiar el estado del servicio: ' + error.message);
+                renderStoreServiceControl();
+            } finally {
+                button.disabled = false;
+            }
+        };
 
         // --- MANEJO DE PESTAÑAS ---
         window.switchTab = function (tabName) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            event.currentTarget.classList.add('active');
+            const tabButton = Array.from(document.querySelectorAll('.tab-btn')).find(btn => btn.getAttribute('onclick')?.includes(`'${tabName}'`));
+            if (tabButton) tabButton.classList.add('active');
             document.getElementById(`tab-${tabName}`).classList.add('active');
         };
 
         // --- GESTIÓN DE VARIANTES ---
         window.toggleVariantsUI = function () {
             const hasVariants = document.getElementById('prod-has-variants').checked;
+            const isPromo = document.getElementById('prod-tipo').value === 'promo';
             document.getElementById('box-single-price').style.display = hasVariants ? 'none' : 'block';
             document.getElementById('box-variants').style.display = hasVariants ? 'block' : 'none';
+            document.getElementById('prod-precio').disabled = isPromo || hasVariants;
+            document.querySelectorAll('#variants-container input').forEach(input => input.disabled = isPromo || !hasVariants);
 
-            if (hasVariants && document.getElementById('variants-container').children.length === 0) {
+            if (!isPromo && hasVariants && document.getElementById('variants-container').children.length === 0) {
                 addVariantRow();
             }
         };
@@ -532,6 +708,102 @@
             <button type="button" style="background:transparent; color:var(--danger); font-size:1.2rem; padding:6px;" onclick="this.parentElement.remove()">🗑️</button>
         `;
             container.appendChild(row);
+            window.toggleVariantsUI();
+        };
+
+        window.setProductType = function (type) {
+            const isPromo = type === 'promo';
+            document.getElementById('prod-tipo').value = type;
+            document.getElementById('normal-product-fields').style.display = isPromo ? 'none' : 'block';
+            document.getElementById('promo-fields').style.display = isPromo ? 'block' : 'none';
+            document.querySelectorAll('#promo-fields input').forEach(input => input.disabled = !isPromo);
+            document.getElementById('prod-imagen').placeholder = isPromo
+                ? 'URL de imagen para la promoción'
+                : 'URL de la imagen de la bebida';
+            document.getElementById('form-product-title').textContent = isPromo ? 'Crear promoción' : 'Agregar producto';
+            document.getElementById('form-product-help').textContent = isPromo
+                ? 'Combina bebidas existentes sin escribir cada combinación manualmente.'
+                : 'Crea una bebida individual con su precio y opciones.';
+            document.getElementById('save-product-btn').textContent = isPromo ? 'Guardar promoción' : 'Guardar producto';
+            document.querySelectorAll('.type-switch-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.type === type));
+            window.toggleVariantsUI();
+            renderPromoProductsPicker();
+        };
+
+        function readCurrentPromoRules() {
+            const rules = {};
+            document.querySelectorAll('.promo-product-option[data-product-id]').forEach(card => {
+                const productId = card.dataset.productId;
+                rules[productId] = Array.from(card.querySelectorAll('.promo-variant-check:checked'))
+                    .map(input => Number(input.value));
+            });
+            return rules;
+        }
+
+        function renderPromoProductsPicker(selectedIds = null, selectedRules = null) {
+            const picker = document.getElementById('promo-products-picker');
+            if (!picker) return;
+            const currentSelected = selectedIds || Array.from(picker.querySelectorAll('.promo-product-check:checked')).map(input => input.value);
+            const currentRules = selectedRules || readCurrentPromoRules();
+            const eligible = adminProducts.filter(product => product.tipo !== 'promo');
+            if (!eligible.length) {
+                picker.innerHTML = '<p class="form-empty">Primero agrega bebidas al catálogo.</p>';
+                return;
+            }
+            picker.innerHTML = eligible.map(product => {
+                const variants = Array.isArray(product.variants) ? product.variants : [];
+                const isSelected = currentSelected.includes(product.id);
+                const allowedIndexes = Array.isArray(currentRules[product.id])
+                    ? currentRules[product.id]
+                    : variants.map((_, index) => index);
+                return `
+                    <div class="promo-product-option ${isSelected ? 'selected' : ''}" data-product-id="${product.id}">
+                        <label class="promo-product-main">
+                            <input class="promo-product-check" type="checkbox" value="${product.id}" ${isSelected ? 'checked' : ''} onchange="togglePromoProductVariants('${product.id}')">
+                            <img src="${product.img}" alt="">
+                            <span><strong>${product.name}</strong><small>${variants.length ? 'Elige las opciones permitidas' : 'Sin opciones adicionales'}</small></span>
+                        </label>
+                        ${variants.length ? `
+                            <div class="promo-variant-rules">
+                                ${variants.map((variant, index) => `
+                                    <label>
+                                        <input class="promo-variant-check" type="checkbox" value="${index}" ${allowedIndexes.includes(index) ? 'checked' : ''} ${isSelected ? '' : 'disabled'}>
+                                        <span>${variant.name}</span>
+                                    </label>`).join('')}
+                            </div>` : ''}
+                    </div>`;
+            }).join('');
+        }
+
+        window.togglePromoProductVariants = function (productId) {
+            const card = document.querySelector(`.promo-product-option[data-product-id="${productId}"]`);
+            if (!card) return;
+            const enabled = card.querySelector('.promo-product-check').checked;
+            card.classList.toggle('selected', enabled);
+            card.querySelectorAll('.promo-variant-check').forEach(input => {
+                input.disabled = !enabled;
+                if (enabled && !card.querySelector('.promo-variant-check:checked')) input.checked = true;
+            });
+        };
+
+        window.toggleAllPromoProducts = function () {
+            const boxes = Array.from(document.querySelectorAll('#promo-products-picker .promo-product-check'));
+            const shouldSelect = boxes.some(box => !box.checked);
+            boxes.forEach(box => {
+                box.checked = shouldSelect;
+                window.togglePromoProductVariants(box.value);
+            });
+        };
+
+        window.resetProductForm = function () {
+            document.getElementById('productForm').reset();
+            document.getElementById('prod-id').value = '';
+            document.getElementById('variants-container').innerHTML = '';
+            document.getElementById('promo-cantidad').value = 2;
+            document.getElementById('cancel-product-edit').style.display = 'none';
+            window.setProductType('producto');
+            window.toggleVariantsUI();
+            renderPromoProductsPicker([]);
         };
 
         // --- GUARDAR O EDITAR PRODUCTOS ---
@@ -541,19 +813,52 @@
             const nombre = document.getElementById('prod-nombre').value.trim();
             const descripcion = document.getElementById('prod-descripcion').value.trim();
             const imagen = document.getElementById('prod-imagen').value.trim();
-            const hasVariants = document.getElementById('prod-has-variants').checked;
-            const esOferta = document.getElementById('prod-es-oferta').checked; // Capturar estado de oferta
+            const tipo = document.getElementById('prod-tipo').value;
+            const isPromo = tipo === 'promo';
+            const hasVariants = !isPromo && document.getElementById('prod-has-variants').checked;
 
             let productData = {
                 name: nombre,
                 desc: descripcion,
                 img: imagen,
                 hasVariants: hasVariants,
-                esOferta: esOferta, // Guardar si es oferta
+                tipo: tipo,
+                esOferta: isPromo,
                 updatedAt: serverTimestamp()
             };
 
-            if (hasVariants) {
+            if (isPromo) {
+                const selectedProducts = Array.from(document.querySelectorAll('#promo-products-picker .promo-product-check:checked')).map(input => input.value);
+                const promoCantidad = Math.max(1, parseInt(document.getElementById('promo-cantidad').value, 10) || 1);
+                const promoPrecio = parseFloat(document.getElementById('promo-precio').value);
+                if (!selectedProducts.length) {
+                    alert('Selecciona al menos una bebida para la promoción.');
+                    return;
+                }
+                if (!Number.isFinite(promoPrecio)) {
+                    alert('Ingresa el precio total de la promoción.');
+                    return;
+                }
+                const promoVariantRules = {};
+                for (const productId of selectedProducts) {
+                    const product = adminProducts.find(item => item.id === productId);
+                    const variants = Array.isArray(product?.variants) ? product.variants : [];
+                    if (!variants.length) continue;
+                    const allowed = Array.from(document.querySelectorAll(`.promo-product-option[data-product-id="${productId}"] .promo-variant-check:checked`))
+                        .map(input => Number(input.value));
+                    if (!allowed.length) {
+                        alert(`Selecciona al menos una opción permitida para ${product.name}.`);
+                        return;
+                    }
+                    promoVariantRules[productId] = allowed;
+                }
+                productData.promoProductIds = selectedProducts;
+                productData.promoVariantRules = promoVariantRules;
+                productData.promoCantidad = promoCantidad;
+                productData.unidadesIncluidas = promoCantidad;
+                productData.precio = promoPrecio;
+                productData.variants = null;
+            } else if (hasVariants) {
                 const variantRows = document.querySelectorAll('.variant-row');
                 let variantsArray = [];
                 variantRows.forEach(row => {
@@ -564,9 +869,22 @@
                 });
                 productData.variants = variantsArray;
                 productData.precio = null;
+                productData.unidadesIncluidas = 1;
+                productData.promoProductIds = null;
+                productData.promoVariantRules = null;
+                productData.promoCantidad = null;
             } else {
-                productData.precio = parseFloat(document.getElementById('prod-precio').value);
+                const precioBase = parseFloat(document.getElementById('prod-precio').value);
+                if (!Number.isFinite(precioBase)) {
+                    alert('Ingresa el precio de la bebida.');
+                    return;
+                }
+                productData.precio = precioBase;
                 productData.variants = null;
+                productData.unidadesIncluidas = 1;
+                productData.promoProductIds = null;
+                productData.promoVariantRules = null;
+                productData.promoCantidad = null;
             }
 
             try {
@@ -577,13 +895,7 @@
                     await addDoc(productsRef, productData);
                 }
                 
-                // Resetear formulario completo
-                document.getElementById('productForm').reset();
-                document.getElementById('prod-id').value = '';
-                document.getElementById('variants-container').innerHTML = '';
-                document.getElementById('prod-es-oferta').checked = false;
-                document.getElementById('form-product-title').textContent = "Agregar Nuevo Producto";
-                toggleVariantsUI();
+                window.resetProductForm();
                 
             } catch (error) {
                 alert("Error: " + error.message);
@@ -594,30 +906,48 @@
         onSnapshot(productsRef, (snapshot) => {
             const listContainer = document.getElementById('admin-products-list');
             listContainer.innerHTML = '';
+            adminProducts = snapshot.docs.map(docSnap => ({ id: docSnap.id, ...docSnap.data() }));
+            renderPromoProductsPicker();
 
-            snapshot.forEach(docSnap => {
-                const p = docSnap.data();
-                const id = docSnap.id;
-                const precioTexto = p.hasVariants ? `Variantes (${p.variants.length})` : `Q${p.precio}`;
+            adminProducts
+                .sort((a, b) => Number(a.tipo === 'promo') - Number(b.tipo === 'promo') || String(a.name).localeCompare(String(b.name), 'es'))
+                .forEach(p => {
+                const id = p.id;
+                const isBuilderPromo = p.tipo === 'promo';
+                const precioTexto = isBuilderPromo
+                    ? `Elige ${p.promoCantidad || p.unidadesIncluidas || 1} · Q${p.precio}`
+                    : p.hasVariants ? `Opciones (${p.variants?.length || 0})` : `Q${p.precio}`;
+                const unidadesTexto = !isBuilderPromo && (p.unidadesIncluidas || 1) > 1 ? ` · Incluye ${p.unidadesIncluidas} bebidas` : '';
                 
                 // Lógica visual para Disponibilidad
-                const statusClass = p.disponible ? 'disponible' : 'agotado';
-                const statusText = p.disponible ? '✓ Disponible' : '✕ Agotado';
+                const isAvailable = p.disponible !== false;
+                const statusClass = isAvailable ? 'disponible' : 'agotado';
+                const statusText = isAvailable ? '✓ Disponible' : '✕ Agotado';
 
                 // Lógica visual para Promociones
                 const isPromo = !!p.esOferta; 
                 const promoClass = isPromo ? 'activa' : 'inactiva';
-                const promoText = isPromo ? '🔥 En Promo' : 'Normal';
+                const promoText = isBuilderPromo ? 'Promoción' : isPromo ? 'Destacado' : 'Producto';
+                const promoProductsText = isBuilderPromo
+                    ? (p.promoProductIds || []).map(productId => {
+                        const product = adminProducts.find(item => item.id === productId);
+                        if (!product) return '';
+                        const variants = Array.isArray(product.variants) ? product.variants : [];
+                        const rule = p.promoVariantRules && p.promoVariantRules[productId];
+                        if (!variants.length || !Array.isArray(rule)) return product.name;
+                        const names = rule.map(index => variants[index]?.name).filter(Boolean);
+                        return `${product.name} (${names.join(', ')})`;
+                    }).filter(Boolean).join(' · ') || 'Sin bebidas seleccionadas'
+                    : p.desc.substring(0, 40) + '...';
 
                 listContainer.innerHTML += `
-                <div class="item-list-row">
+                <div class="item-list-row ${isBuilderPromo ? 'promo-list-row' : ''}">
                     <div class="item-info">
-                        <h4>${p.name}</h4>
-                        <p>${precioTexto} — ${p.desc.substring(0, 40)}...</p>
+                        <div class="item-title-line"><span class="product-type-badge ${isBuilderPromo ? 'promo' : ''}">${isBuilderPromo ? 'PROMO' : 'BEBIDA'}</span><h4>${p.name}</h4></div>
+                        <p>${precioTexto}${unidadesTexto} — ${promoProductsText}</p>
                     </div>
                     <div class="item-actions">
-                        <button class="btn-promo ${promoClass}" onclick="togglePromo('${id}', ${isPromo})">${promoText}</button>
-                        <button class="btn-status ${statusClass}" onclick="toggleStatus('${id}', ${p.disponible})">${statusText}</button>
+                        <button class="btn-status ${statusClass}" onclick="toggleStatus('${id}', ${isAvailable})">${statusText}</button>
                         <button class="btn-action-icon" onclick="editProduct('${id}', ${JSON.stringify(p).replace(/"/g, '&quot;')})">✏️</button>
                         <button class="btn-action-icon" style="color: var(--danger)" onclick="deleteProduct('${id}')">🗑️</button>
                     </div>
@@ -638,20 +968,29 @@
 
         // Cargar datos en el formulario para editar
         window.editProduct = function (id, data) {
-            document.getElementById('form-product-title').textContent = "Editar Producto";
             document.getElementById('prod-id').value = id;
             document.getElementById('prod-nombre').value = data.name;
             document.getElementById('prod-descripcion').value = data.desc;
             document.getElementById('prod-imagen').value = data.img;
-            document.getElementById('prod-has-variants').checked = data.hasVariants;
-            document.getElementById('prod-es-oferta').checked = !!data.esOferta; // Cargar si es oferta
-            
-            toggleVariantsUI();
-            
-            if (data.hasVariants) {
+            document.getElementById('cancel-product-edit').style.display = 'block';
+
+            if (data.tipo === 'promo') {
+                window.setProductType('promo');
+                document.getElementById('form-product-title').textContent = 'Editar promoción';
+                document.getElementById('promo-cantidad').value = data.promoCantidad || data.unidadesIncluidas || 2;
+                document.getElementById('promo-precio').value = data.precio;
+                renderPromoProductsPicker(data.promoProductIds || [], data.promoVariantRules || {});
+            } else {
+                window.setProductType('producto');
+                document.getElementById('form-product-title').textContent = 'Editar producto';
+                document.getElementById('prod-has-variants').checked = !!data.hasVariants;
+                window.toggleVariantsUI();
+            }
+
+            if (data.tipo !== 'promo' && data.hasVariants) {
                 document.getElementById('variants-container').innerHTML = '';
                 data.variants.forEach(v => addVariantRow(v.name, v.precio));
-            } else {
+            } else if (data.tipo !== 'promo') {
                 document.getElementById('prod-precio').value = data.precio;
             }
             switchTab('productos');
@@ -676,6 +1015,9 @@
                 const dateB = b.fecha ? b.fecha.toMillis() : Date.now();
                 return dateB - dateA;
             });
+
+            const pedidosActivos = pedidosArray.filter(p => p.estado !== "Entregado").length;
+            document.getElementById('lbl-pedidos-activos').textContent = pedidosActivos;
 
             if (pedidosArray.length === 0) {
                 ordersList.innerHTML = '<p style="text-align:center; color:var(--text-muted); padding: 20px 0;">No se han registrado pedidos todavía.</p>';
@@ -716,7 +1058,7 @@
                 }
                 
                 ordersList.innerHTML += `
-                <div class="order-card ${cardClass}">
+                <div class="order-card ${cardClass}" data-status="${pedido.estado}" data-search="${`${pedido.numero || ''} ${pedido.cliente || ''} ${pedido.residencial || ''}`.toLowerCase()}">
                     <div class="order-header">
                         <span class="order-id">Pedido: #${pedido.numero || 'N/A'}</span>
                         <span class="order-date">${fechaFormateada}</span>
@@ -729,7 +1071,7 @@
                     </div>
                     
                     <div class="order-products">
-                        <div class="order-products-title">Bebidas Solicitadas</div>
+                        <div class="order-products-title">Bebidas Solicitadas · ${pedido.totalBebidas || (pedido.productos || []).reduce((sum, prod) => sum + (prod.cantidad * (prod.unidadesIncluidas || 1)), 0)} bebidas reales</div>
                         ${productosHtml}
                     </div>
 
@@ -748,7 +1090,25 @@
                 </div>
             `;
             });
+            window.applyOrderFilters();
         });
+
+        let currentOrderFilter = 'Todos';
+        window.filterOrders = function (status, button) {
+            currentOrderFilter = status;
+            document.querySelectorAll('.order-filter').forEach(btn => btn.classList.remove('active'));
+            if (button) button.classList.add('active');
+            window.applyOrderFilters();
+        };
+
+        window.applyOrderFilters = function () {
+            const search = (document.getElementById('order-search')?.value || '').trim().toLowerCase();
+            document.querySelectorAll('#admin-orders-list .order-card').forEach(card => {
+                const matchesStatus = currentOrderFilter === 'Todos' || card.dataset.status === currentOrderFilter;
+                const matchesSearch = !search || card.dataset.search.includes(search);
+                card.style.display = matchesStatus && matchesSearch ? '' : 'none';
+            });
+        };
 
         window.updateOrderStatus = async function (id, newStatus) {
             try {
@@ -856,6 +1216,7 @@
             }
         };
     </script>
+    <script src="admin-premium.js"></script>
 </body>
 
 </html>

@@ -515,7 +515,7 @@
             <div class="page-intro compact">
                 <div><h1>Productos</h1><p>Agrega, edita y cambia la disponibilidad del menú.</p></div>
             </div>
-            <div class="admin-box">
+            <div class="admin-box" id="product-editor-box">
                 <div class="product-form-header">
                     <div>
                         <h2 id="form-product-title">Agregar producto</h2>
@@ -525,6 +525,7 @@
                         <button type="button" class="type-switch-btn active" data-type="producto" onclick="setProductType('producto')">Bebida</button>
                         <button type="button" class="type-switch-btn" data-type="promo" onclick="setProductType('promo')">Promoción</button>
                     </div>
+                    <button type="button" class="editor-modal-close" onclick="resetProductForm()" aria-label="Cerrar editor">✕</button>
                 </div>
                 <form id="productForm">
                     <input type="hidden" id="prod-id">
@@ -609,6 +610,7 @@
         </div>
 
     </div>
+    <div id="admin-edit-backdrop" class="admin-edit-backdrop" onclick="resetProductForm()"></div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -698,17 +700,28 @@
             }
         };
 
-        window.addVariantRow = function (name = '', price = '') {
+        window.addVariantRow = function (name = '', price = '', disponible = true) {
             const container = document.getElementById('variants-container');
             const row = document.createElement('div');
             row.className = 'variant-row';
             row.innerHTML = `
             <input type="text" class="v-name" placeholder="Ej: Con 2 oz" value="${name}" required>
             <input type="number" class="v-price" placeholder="Precio" value="${price}" min="0" required style="width: 100px;">
+            <label class="variant-availability ${disponible ? 'available' : 'unavailable'}">
+                <input type="checkbox" class="v-available" ${disponible ? 'checked' : ''} onchange="updateVariantAvailabilityLabel(this)">
+                <span>${disponible ? 'Disponible' : 'No disponible'}</span>
+            </label>
             <button type="button" style="background:transparent; color:var(--danger); font-size:1.2rem; padding:6px;" onclick="this.parentElement.remove()">🗑️</button>
         `;
             container.appendChild(row);
             window.toggleVariantsUI();
+        };
+
+        window.updateVariantAvailabilityLabel = function (input) {
+            const label = input.closest('.variant-availability');
+            label.classList.toggle('available', input.checked);
+            label.classList.toggle('unavailable', !input.checked);
+            label.querySelector('span').textContent = input.checked ? 'Disponible' : 'No disponible';
         };
 
         window.setProductType = function (type) {
@@ -754,8 +767,8 @@
                 const variants = Array.isArray(product.variants) ? product.variants : [];
                 const isSelected = currentSelected.includes(product.id);
                 const allowedIndexes = Array.isArray(currentRules[product.id])
-                    ? currentRules[product.id]
-                    : variants.map((_, index) => index);
+                    ? currentRules[product.id].filter(index => variants[index]?.disponible !== false)
+                    : variants.map((variant, index) => variant.disponible !== false ? index : null).filter(index => index !== null);
                 return `
                     <div class="promo-product-option ${isSelected ? 'selected' : ''}" data-product-id="${product.id}">
                         <label class="promo-product-main">
@@ -767,8 +780,8 @@
                             <div class="promo-variant-rules">
                                 ${variants.map((variant, index) => `
                                     <label>
-                                        <input class="promo-variant-check" type="checkbox" value="${index}" ${allowedIndexes.includes(index) ? 'checked' : ''} ${isSelected ? '' : 'disabled'}>
-                                        <span>${variant.name}</span>
+                                        <input class="promo-variant-check" type="checkbox" value="${index}" data-stock-disabled="${variant.disponible === false}" ${allowedIndexes.includes(index) ? 'checked' : ''} ${isSelected && variant.disponible !== false ? '' : 'disabled'}>
+                                        <span>${variant.name}${variant.disponible === false ? ' · No disponible' : ''}</span>
                                     </label>`).join('')}
                             </div>` : ''}
                     </div>`;
@@ -781,8 +794,10 @@
             const enabled = card.querySelector('.promo-product-check').checked;
             card.classList.toggle('selected', enabled);
             card.querySelectorAll('.promo-variant-check').forEach(input => {
-                input.disabled = !enabled;
-                if (enabled && !card.querySelector('.promo-variant-check:checked')) input.checked = true;
+                const outOfStock = input.dataset.stockDisabled === 'true';
+                input.disabled = !enabled || outOfStock;
+                if (outOfStock) input.checked = false;
+                if (enabled && !outOfStock && !card.querySelector('.promo-variant-check:checked')) input.checked = true;
             });
         };
 
@@ -801,6 +816,9 @@
             document.getElementById('variants-container').innerHTML = '';
             document.getElementById('promo-cantidad').value = 2;
             document.getElementById('cancel-product-edit').style.display = 'none';
+            document.getElementById('product-editor-box').classList.remove('editing-modal');
+            document.getElementById('admin-edit-backdrop').classList.remove('open');
+            document.body.classList.remove('admin-modal-open');
             window.setProductType('producto');
             window.toggleVariantsUI();
             renderPromoProductsPicker([]);
@@ -864,7 +882,8 @@
                 variantRows.forEach(row => {
                     variantsArray.push({
                         name: row.querySelector('.v-name').value.trim(),
-                        precio: parseFloat(row.querySelector('.v-price').value)
+                        precio: parseFloat(row.querySelector('.v-price').value),
+                        disponible: row.querySelector('.v-available').checked
                     });
                 });
                 productData.variants = variantsArray;
@@ -916,7 +935,9 @@
                 const isBuilderPromo = p.tipo === 'promo';
                 const precioTexto = isBuilderPromo
                     ? `Elige ${p.promoCantidad || p.unidadesIncluidas || 1} · Q${p.precio}`
-                    : p.hasVariants ? `Opciones (${p.variants?.length || 0})` : `Q${p.precio}`;
+                    : p.hasVariants
+                        ? `Opciones: ${(p.variants || []).filter(variant => variant.disponible !== false).length}/${p.variants?.length || 0} disponibles`
+                        : `Q${p.precio}`;
                 const unidadesTexto = !isBuilderPromo && (p.unidadesIncluidas || 1) > 1 ? ` · Incluye ${p.unidadesIncluidas} bebidas` : '';
                 
                 // Lógica visual para Disponibilidad
@@ -973,6 +994,9 @@
             document.getElementById('prod-descripcion').value = data.desc;
             document.getElementById('prod-imagen').value = data.img;
             document.getElementById('cancel-product-edit').style.display = 'block';
+            document.getElementById('product-editor-box').classList.add('editing-modal');
+            document.getElementById('admin-edit-backdrop').classList.add('open');
+            document.body.classList.add('admin-modal-open');
 
             if (data.tipo === 'promo') {
                 window.setProductType('promo');
@@ -989,7 +1013,7 @@
 
             if (data.tipo !== 'promo' && data.hasVariants) {
                 document.getElementById('variants-container').innerHTML = '';
-                data.variants.forEach(v => addVariantRow(v.name, v.precio));
+                data.variants.forEach(v => addVariantRow(v.name, v.precio, v.disponible !== false));
             } else if (data.tipo !== 'promo') {
                 document.getElementById('prod-precio').value = data.precio;
             }

@@ -662,7 +662,10 @@
                 <button onclick="document.getElementById('ofertas-wrapper').scrollIntoView({behavior:'smooth'})">Promociones</button>
             </div>
             <div class="nav-actions">
-                <button class="nav-track" onclick="openTrackingModal()">⌖ <span>Rastrear</span></button>
+                <button class="nav-track" onclick="openTrackingModal()" aria-label="Rastrear pedido">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.5 12 3l8 4.5v9L12 21l-8-4.5v-9ZM4.5 7.8 12 12l7.5-4.2M12 12v9"/></svg>
+                    <span>Rastrear pedido</span>
+                </button>
                 <button class="nav-order" onclick="openCart()">Mi pedido <span id="nav-count">0</span></button>
             </div>
         </nav>
@@ -670,9 +673,7 @@
 
     <section class="store-intro">
         <div>
-            <span>DRINKS & RELAX</span>
             <h1>¿Qué vas a tomar hoy?</h1>
-            <p>Selecciona tus bebidas y completa el pedido desde el carrito.</p>
         </div>
         <div class="store-info">
             <div id="customer-service-status" class="service-status-card active"><b>●</b><span><strong>Servicio activo</strong><small>Pedidos disponibles</small></span></div>
@@ -686,8 +687,7 @@
     </div>
 
     <section class="menu-heading">
-        <div><span class="overline">PRODUCTOS DISPONIBLES</span><h2>Menú de bebidas</h2></div>
-        <p>Selecciona una bebida para agregarla a tu pedido.</p>
+        <div><h2>Menú</h2></div>
     </section>
     <div class="grid" id="products">
         <div class="loading">Preparando barra...</div>
@@ -855,14 +855,18 @@
             allProducts.forEach((p) => {
                 let precioTexto = "";
                 if (p.hasVariants && p.variants && p.variants.length > 0) {
-                    const precioMinimo = Math.min(...p.variants.map(v => v.precio));
+                    const variantesDisponibles = p.variants.filter(variant => variant.disponible !== false);
+                    const precioMinimo = variantesDisponibles.length
+                        ? Math.min(...variantesDisponibles.map(v => v.precio))
+                        : Math.min(...p.variants.map(v => v.precio));
                     precioTexto = `Desde Q${precioMinimo}`;
                 } else {
                     precioTexto = `Q${p.precio}`;
                 }
 
                 // Lógica de Agotado
-                const estaAgotado = p.disponible === false;
+                const sinVariantesDisponibles = p.hasVariants && Array.isArray(p.variants) && !p.variants.some(variant => variant.disponible !== false);
+                const estaAgotado = p.disponible === false || sinVariantesDisponibles;
                 const noDisponible = estaAgotado || !servicioActivo;
                 const claseAgotado = estaAgotado ? 'agotado' : !servicioActivo ? 'servicio-cerrado' : '';
                 const badgeAgotado = estaAgotado
@@ -882,7 +886,7 @@
                     ${unidadesBadge}
                     <div class="image-shell"><img src="${p.img}" alt="${p.name}" loading="lazy"></div>
                     <div class="info">
-                        <span class="product-kicker">${p.esOferta ? 'COMBO DE LA CASA' : 'PREPARADO AL MOMENTO'}</span>
+                        ${p.esOferta ? '<span class="product-kicker">PROMOCIÓN</span>' : ''}
                         <h3>${p.name}</h3>
                         <p class="desc">${p.desc}</p>
                         <div class="price-row">
@@ -921,12 +925,19 @@
             if (producto.tipo === 'promo') {
                 abrirSelectorPromo(producto);
             } else if (producto.hasVariants && producto.variants) {
+                const variantesDisponibles = producto.variants
+                    .map((variant, index) => ({ variant, index }))
+                    .filter(({ variant }) => variant.disponible !== false);
+                if (!variantesDisponibles.length) {
+                    mostrarToast('Este producto no tiene opciones disponibles');
+                    return;
+                }
                 productoSeleccionadoId = id;
                 document.getElementById('variantTitle').textContent = `Opciones para ${producto.name}`;
                 const container = document.getElementById('variantOptions');
                 container.innerHTML = '';
 
-                producto.variants.forEach((v, vIdx) => {
+                variantesDisponibles.forEach(({ variant: v, index: vIdx }) => {
                     container.innerHTML += `
                     <div class="variant-option" onclick="agregarConVariante(${vIdx})">
                         <span class="variant-name">${v.name}</span>
@@ -990,7 +1001,7 @@
             const savedRule = promo.promoVariantRules && promo.promoVariantRules[producto.id];
             const indexes = Array.isArray(savedRule) ? savedRule : variants.map((_, index) => index);
             return indexes
-                .filter(index => variants[index])
+                .filter(index => variants[index] && variants[index].disponible !== false)
                 .map(index => ({ index, variant: variants[index] }));
         }
 
@@ -1222,8 +1233,7 @@
                 await addDoc(collection(db, "pedidos"), datosPedido);
                 localStorage.setItem("ultimoPedido", numeroPedido);
                 
-                const detallePedido = carrito.map(p => `• ${p.cantidad}x ${p.name}`).join('\n');
-                const msg = `🍹 *NUEVO PEDIDO #${numeroPedido}*\n\n*Detalle:*\n${detallePedido}\n\n*Total a pagar:* Q${total}\n*Residencial:* ${residencial}\n*Dirección:* ${direccion}\n*Código:* ${codigo}\n*Pago:* ${pago}\n\nA nombre de: ${nombre}`;
+                const msg = `Hola, realicé el pedido No. ${numeroPedido}`;
 
                 const whatsappUrl = `https://wa.me/50246577219?text=${encodeURIComponent(msg)}`;
                 window.location.href = whatsappUrl;
